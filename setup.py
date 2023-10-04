@@ -25,7 +25,6 @@ extras_require = {
         "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
         "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
         "mdformat-pyproject>=0.0.1",  # Allows configuring in pyproject.toml
-        "pydantic<2.0",  # Needed for successful type check. TODO: Remove after full v2 support.
     ],
     "doc": [
         "myst-parser>=1.0.0,<2",  # Parse markdown docs
@@ -76,6 +75,7 @@ setup(
     install_requires=[
         "hexbytes>=0.3.0,<1",
         "eth-utils>=2.2.0,<3",
+        "eth-hash[pycryptodome]>=0.5.2,<1",
         "pydantic>=2.4.2,<3",
     ],
     python_requires=">=3.8,<4",
