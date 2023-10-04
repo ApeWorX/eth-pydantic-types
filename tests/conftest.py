@@ -1,0 +1,6 @@
+import pytest
+
+
+@pytest.fixture
+def bytes32str():
+    return "0x9B70BD98CCB5B6434C2EAD14D68D15F392435A06FF469F8D1F8CF38B2AE0B0E2"
