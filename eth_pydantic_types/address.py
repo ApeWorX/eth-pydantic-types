@@ -19,7 +19,10 @@ class Address(str):
     """
 
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
-        schema = with_info_before_validator_function(self._validate_address, str_schema())
+        schema = with_info_before_validator_function(
+            self._validate_address,
+            str_schema(min_length=42, max_length=42, pattern="^0x[a-fA-F0-9]{40}$"),
+        )
         return schema
 
     @classmethod

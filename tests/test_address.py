@@ -1,5 +1,5 @@
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from eth_pydantic_types.address import Address
 from eth_pydantic_types.hexbytes import HexBytes
@@ -33,3 +33,25 @@ def checksum_address():
 def test_address(address, checksum_address):
     actual = Model(address=address)
     assert actual.address == checksum_address
+
+
+@pytest.mark.parametrize("address", ("foo", -35, "0x" + ("F" * 100)))
+def test_invalid_address(address):
+    with pytest.raises(ValidationError):
+        Model(address=address)
+
+
+def test_schema():
+    actual = Model.model_json_schema()
+    for name, prop in actual["properties"].items():
+        assert prop["maxLength"] == 42
+        assert prop["minLength"] == 42
+        assert prop["type"] == "string"
+        assert prop["pattern"] == "^0x[a-fA-F0-9]{40}$"
+
+
+def test_model_dump():
+    model = Model(address=ADDRESS)
+    actual = model.model_dump()
+    expected = {"address": CHECKSUM_ADDRESS}
+    assert actual == expected
