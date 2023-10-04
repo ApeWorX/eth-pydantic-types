@@ -14,8 +14,8 @@ from eth_pydantic_types.validators import validate_address_size
 
 class Address(str):
     """
-    Use when receiving ``hexbytes.HexBytes`` values. Includes
-    a pydantic validator and serializer.
+    Use for address-types. Validates as a checksummed address. Left-pads zeroes
+    if necessary.
     """
 
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
