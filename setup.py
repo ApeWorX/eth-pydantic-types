@@ -37,6 +37,7 @@ extras_require = {
         "setuptools",  # Installation tool
         "wheel",  # Packaging tool
         "twine==3.8.0",  # Package upload tool
+        "packaging>=23.1,<24",  # Needed for twine
     ],
     "dev": [
         # commitizen: Manage commits and publishing releases
