@@ -28,7 +28,6 @@ extras_require = {
     ],
     "doc": [
         "myst-parser>=1.0.0,<2",  # Parse markdown docs
-        "sphinx-click>=4.4.0,<5",  # For documenting CLI
         "Sphinx>=6.1.3,<7",  # Documentation generator
         "sphinx_rtd_theme>=1.2.0,<2",  # Readthedocs.org theme
         "sphinxcontrib-napoleon>=0.7",  # Allow Google-style documentation

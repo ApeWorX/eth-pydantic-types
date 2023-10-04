@@ -97,7 +97,9 @@ def get_versions() -> List[str]:
     """
     Get all the versions from the Web.
     """
-    api_url = "https://api.github.com/repos/ApeWorx/eth-pydantic-types/git/trees/gh-pages?recursive=1"
+    api_url = (
+        "https://api.github.com/repos/ApeWorx/eth-pydantic-types/git/trees/gh-pages?recursive=1"
+    )
     response = requests.get(api_url)
     response.raise_for_status()
     pattern = re.compile(r"v\d+.?\d+.?\d+$")
