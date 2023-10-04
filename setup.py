@@ -73,7 +73,11 @@ setup(
     author_email="admin@apeworx.io",
     url="https://github.com/ApeWorX/evm-pydantic-types",
     include_package_data=True,
-    install_requires=["hexbytes>=0.3.0,<1", "eth-utils>=2.2.0,<3"],
+    install_requires=[
+        "hexbytes>=0.3.0,<1",
+        "eth-utils>=2.2.0,<3",
+        "pydantic>=2.4.2,<3",
+    ],
     python_requires=">=3.8,<4",
     extras_require=extras_require,
     py_modules=["eth_pydantic_types"],
