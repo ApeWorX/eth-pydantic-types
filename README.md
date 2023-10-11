@@ -74,3 +74,23 @@ class Tx(BaseModel):
 
 tx = Tx(data="0x0123")
 ```
+
+## Bip122Uri
+
+Use BIP-122 URIs in your models by annotating with the `Bip122Uri` type.
+This type serializes to a `str` in the Pydantic core schema as well as a `string` in the JSON schema, however the individual hashes are validated.
+
+```python
+from eth_pydantic_types import Bip122Uri
+from pydantic import BaseModel
+
+class Message(BaseModel):
+    path: Bip122Uri
+
+message = Message(
+    path=(
+        "blockchain://d4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3"
+        "/block/752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6"
+    )
+)
+```

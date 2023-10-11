@@ -23,5 +23,5 @@ def Bip122UriFormatError(value: str) -> PydanticCustomError:
         Bip122UriFormatError,
         "BIP-122 URI format",
         uri=value,
-        format="blockchain://<genesis_hash>/block/<block_hash>."
+        format="blockchain://<genesis_hash>/block/<block_hash>.",
     )
