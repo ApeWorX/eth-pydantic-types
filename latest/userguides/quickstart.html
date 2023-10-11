@@ -62,9 +62,11 @@
               <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">eth-pydantic-types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hash32">Hash32</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hash">Hash</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#hexbytes">HexBytes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#address">Address</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hexstr">HexStr</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bip122uri">Bip122Uri</a></li>
 </ul>
 </li>
 </ul>
@@ -72,7 +74,6 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/address.html">eth_pydantic_types.address</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../methoddocs/hash.html">eth_pydantic_types.hash</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../methoddocs/hexbytes.html">eth_pydantic_types.hexbytes</a></li>
 </ul>
 
         </div>
@@ -102,23 +103,26 @@
   <section id="eth-pydantic-types">
 <h1>eth-pydantic-types<a class="headerlink" href="#eth-pydantic-types" title="Permalink to this heading"></a></h1>
 <p>The types in this package are pydantic types for Ethereum inspired from <a class="reference external" href="https://github.com/ethereum/eth-typing/blob/master/eth_typing/evm.py">eth-typing</a>.</p>
-<section id="hash32">
-<h2>Hash32<a class="headerlink" href="#hash32" title="Permalink to this heading"></a></h2>
-<p>Hash32 is a good type to use for Ethereum transaction hashes.
-When using the Hash32 type, your inputs will be validated by length and your schema will declare the input a string with a binary format.
-Use Hash32 like this:</p>
+<section id="hash">
+<h2>Hash<a class="headerlink" href="#hash" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">HashBytes{n}</span></code> and <code class="docutils literal notranslate"><span class="pre">HashStr{n}</span></code> are good types to use when your hex values are sized.
+Both types serialize to <code class="docutils literal notranslate"><span class="pre">string</span></code> in the JSON schema.
+Use <code class="docutils literal notranslate"><span class="pre">HashBytes</span></code> types when you want types to serialize to bytes in the Pydantic core schema and <code class="docutils literal notranslate"><span class="pre">HashStr</span></code> types when you want to serialize to <code class="docutils literal notranslate"><span class="pre">str</span></code> in the core Pydantic schema.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 
-<span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">Hash32</span>
+<span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">HashBytes32</span><span class="p">,</span> <span class="n">HashStr20</span>
 
+<span class="c1"># When serializing to JSON, both types are hex strings.</span>
 <span class="k">class</span> <span class="nc">Transaction</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">tx_hash</span><span class="p">:</span> <span class="n">Hash32</span>
+    <span class="n">tx_hash</span><span class="p">:</span> <span class="n">HashBytes32</span>  <span class="c1"># Will be bytes</span>
+    <span class="n">address</span><span class="p">:</span> <span class="n">HashStr20</span>  <span class="c1"># Will be str</span>
 
 
 <span class="c1"># NOTE: I am able to pass an int-hash as the value and it will</span>
 <span class="c1">#  get validated and type-coerced.</span>
 <span class="n">tx</span> <span class="o">=</span> <span class="n">Transaction</span><span class="p">(</span>
-    <span class="n">tx_hash</span><span class="o">=</span><span class="mh">0x1031f0c9ac54dcb64b4f121a27957c14263c5cb49ed316d568e41e19c34d7b28</span>
+    <span class="n">tx_hash</span><span class="o">=</span><span class="mh">0x1031f0c9ac54dcb64b4f121a27957c14263c5cb49ed316d568e41e19c34d7b28</span><span class="p">,</span>
+    <span class="n">address</span><span class="o">=</span><span class="mh">0x1031f0c9ac54dcb64b4f121a27957c14263c5cb4</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -127,7 +131,8 @@ Use Hash32 like this:</p>
 <h2>HexBytes<a class="headerlink" href="#hexbytes" title="Permalink to this heading"></a></h2>
 <p>A thin-wrapper around an already thin-wrapper <code class="docutils literal notranslate"><span class="pre">hexbytes.HexBytes</span></code>.
 The difference here is that this HexBytes properly serializes.
-Use HexBytes any place where you would actually use <code class="docutils literal notranslate"><span class="pre">hexbytes.HexBytes</span></code>.</p>
+Use HexBytes any place where you would actually use <code class="docutils literal notranslate"><span class="pre">hexbytes.HexBytes</span></code>.
+<code class="docutils literal notranslate"><span class="pre">HexBytes</span></code> serializes to bytes in the Pydantic core schema and <code class="docutils literal notranslate"><span class="pre">string</span></code> in the JSON schema with a binary format.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">HexBytes</span>
 
@@ -142,7 +147,8 @@ Use HexBytes any place where you would actually use <code class="docutils litera
 <section id="address">
 <h2>Address<a class="headerlink" href="#address" title="Permalink to this heading"></a></h2>
 <p>Use the Address class for working with checksummed-addresses.
-Addresses get validated and checksummed in model construction.</p>
+Addresses get validated and checksummed in model construction.
+Addresses serialize to <code class="docutils literal notranslate"><span class="pre">str</span></code> in the Pydantic core schema and <code class="docutils literal notranslate"><span class="pre">string</span></code> in the JSON schema with a binary format.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">Address</span>
 
@@ -152,6 +158,39 @@ Addresses get validated and checksummed in model construction.</p>
 <span class="c1"># NOTE: The address ends up checksummed</span>
 <span class="c1">#   (&quot;0x0837207e343277CBd6c114a45EC0e9Ec56a1AD84&quot;)</span>
 <span class="n">account</span> <span class="o">=</span> <span class="n">Account</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">&quot;0x837207e343277cbd6c114a45ec0e9ec56a1ad84&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="hexstr">
+<h2>HexStr<a class="headerlink" href="#hexstr" title="Permalink to this heading"></a></h2>
+<p>Use hex str when you only care about un-sized hex strings.
+The <code class="docutils literal notranslate"><span class="pre">HexStr</span></code> type serializes to <code class="docutils literal notranslate"><span class="pre">str</span></code> in the Pydantic core schema and a <code class="docutils literal notranslate"><span class="pre">string</span></code> in the JSON schema with a binary format.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">HexStr</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span> <span class="nc">Tx</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">HexStr</span>
+
+<span class="n">tx</span> <span class="o">=</span> <span class="n">Tx</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s2">&quot;0x0123&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="bip122uri">
+<h2>Bip122Uri<a class="headerlink" href="#bip122uri" title="Permalink to this heading"></a></h2>
+<p>Use BIP-122 URIs in your models by annotating with the <code class="docutils literal notranslate"><span class="pre">Bip122Uri</span></code> type.
+This type serializes to a <code class="docutils literal notranslate"><span class="pre">str</span></code> in the Pydantic core schema as well as a <code class="docutils literal notranslate"><span class="pre">string</span></code> in the JSON schema, however the individual hashes are validated.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">eth_pydantic_types</span> <span class="kn">import</span> <span class="n">Bip122Uri</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
+
+<span class="k">class</span> <span class="nc">Message</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Bip122Uri</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="n">Message</span><span class="p">(</span>
+    <span class="n">path</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">&quot;blockchain://d4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3&quot;</span>
+        <span class="s2">&quot;/block/752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </section>
