@@ -94,8 +94,11 @@ def test_schema():
         assert prop["type"] == "string"
         assert prop["format"] == "binary"
         assert prop["pattern"] == f"^0x[a-fA-F0-9]{{{hex_value_str_size}}}$"
+
         assert prop["examples"][0] == f"0x{'0' * hex_value_str_size}"
-        assert len(prop["examples"][1]) == hex_value_str_size + 2
+        assert prop["examples"][1].startswith("0x0")  # Leading zero
+        assert prop["examples"][2].endswith("0")  # Trailing zero
+        assert all(len(ex) == hex_value_str_size + 2 for ex in prop["examples"])
 
 
 def test_model_dump(bytes32str):
