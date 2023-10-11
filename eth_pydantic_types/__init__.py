@@ -1,5 +1,36 @@
 from .address import Address
-from .hash import Hash4, Hash8, Hash16, Hash20, Hash32, Hash64
-from .hexbytes import HexBytes
+from .bip122 import Bip122Uri
+from .hash import (
+    HashBytes4,
+    HashBytes8,
+    HashBytes16,
+    HashBytes20,
+    HashBytes32,
+    HashBytes64,
+    HashStr4,
+    HashStr8,
+    HashStr16,
+    HashStr20,
+    HashStr32,
+    HashStr64,
+)
+from .hex import HexBytes, HexStr
 
-__all__ = ["Address", "Hash4", "Hash8", "Hash16", "Hash20", "Hash32", "Hash64", "HexBytes"]
+__all__ = [
+    "Address",
+    "Bip122Uri",
+    "HashBytes4",
+    "HashBytes8",
+    "HashBytes16",
+    "HashBytes20",
+    "HashBytes32",
+    "HashBytes64",
+    "HashStr4",
+    "HashStr8",
+    "HashStr16",
+    "HashStr20",
+    "HashStr32",
+    "HashStr64",
+    "HexBytes",
+    "HexStr",
+]

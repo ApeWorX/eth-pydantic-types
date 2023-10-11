@@ -2,7 +2,7 @@ import pytest
 from pydantic import BaseModel, ValidationError
 
 from eth_pydantic_types.address import Address
-from eth_pydantic_types.hexbytes import HexBytes
+from eth_pydantic_types.hex import HexBytes
 
 # NOTE: This address purposely is the wrong length (missing left zero),
 #   not checksummed, and not 0x prefixed.
@@ -43,11 +43,17 @@ def test_invalid_address(address):
 
 def test_schema():
     actual = Model.model_json_schema()
-    for name, prop in actual["properties"].items():
-        assert prop["maxLength"] == 42
-        assert prop["minLength"] == 42
-        assert prop["type"] == "string"
-        assert prop["pattern"] == "^0x[a-fA-F0-9]{40}$"
+    prop = actual["properties"]["address"]
+    assert prop["maxLength"] == 42
+    assert prop["minLength"] == 42
+    assert prop["type"] == "string"
+    assert prop["pattern"] == "^0x[a-fA-F0-9]{40}$"
+    assert prop["examples"] == [
+        "0x0000000000000000000000000000000000000000",
+        "0x02c84e944F97F4A4f60221e6fb5d5DbAE49c7aaB",
+        "0xa5a13f62ce1113838e0d9b4559b8caf5f76463c0",
+        "0x1e59ce931B4CFea3fe4B875411e280e173cB7A9C",
+    ]
 
 
 def test_model_dump():
