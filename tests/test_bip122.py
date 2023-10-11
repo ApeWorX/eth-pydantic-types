@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from eth_pydantic_types.bip122 import Bip122Uri
+from eth_pydantic_types.bip122 import Bip122Uri, Bip122UriType
 
 GENESIS_HASH = "d4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3"
 BLOCK_HASH = "752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6"
@@ -12,9 +12,14 @@ class Model(BaseModel):
     uri: Bip122Uri
 
 
-def test_bip122():
-    model = Model(uri=EXAMPLE)
-    assert model.uri == EXAMPLE
+def test_parsed():
+    # NOTE: This won't work in the model itself because
+    #   it turns to `str` after validation, much like URL pydantic classes.
+    uri = Bip122Uri(EXAMPLE)
+    assert uri == EXAMPLE
+    assert uri.uri_type == Bip122UriType.BLOCK
+    assert uri.chain == f"0x{GENESIS_HASH}"
+    assert uri.hash == f"0x{BLOCK_HASH}"
 
 
 @pytest.mark.parametrize(
