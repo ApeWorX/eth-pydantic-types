@@ -5,7 +5,7 @@ The types in this package are pydantic types for Ethereum inspired from [eth-typ
 ## Hash32
 
 Hash32 is a good type to use for Ethereum transaction hashes.
-When using the Hash32 type, your inputs will be validated by length and your schema will declare the input a string with a binary format.
+`Hash` types serialize to bytes in the Pydantic core schema and `string` in the JSON schema with a binary format.
 Use Hash32 like this:
 
 ```python
@@ -29,6 +29,7 @@ tx = Transaction(
 A thin-wrapper around an already thin-wrapper `hexbytes.HexBytes`.
 The difference here is that this HexBytes properly serializes.
 Use HexBytes any place where you would actually use `hexbytes.HexBytes`.
+`HexBytes` serializes to bytes in the Pydantic core schema and `string` in the JSON schema with a binary format.
 
 ```python
 from pydantic import BaseModel
@@ -45,6 +46,7 @@ storage = MyStorage(cid="0x123")
 
 Use the Address class for working with checksummed-addresses.
 Addresses get validated and checksummed in model construction.
+Addresses serialize to `str` in the Pydantic core schema and `string` in the JSON schema with a binary format.
 
 ```python
 from pydantic import BaseModel
@@ -56,4 +58,19 @@ class Account(BaseModel):
 # NOTE: The address ends up checksummed
 #   ("0x0837207e343277CBd6c114a45EC0e9Ec56a1AD84")
 account = Account(address="0x837207e343277cbd6c114a45ec0e9ec56a1ad84")
+```
+
+## HexStr
+
+Use hex str when you only care about un-sized hex strings.
+The `HexStr` type serializes to `str` in the Pydantic core schema and a `string` in the JSON schema with a binary format.
+
+```python
+from eth_pydantic_types import HexStr
+from pydantic import BaseModel
+
+class Tx(BaseModel):
+    data: HexStr
+
+tx = Tx(data="0x0123")
 ```

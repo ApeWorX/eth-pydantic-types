@@ -1,8 +1,9 @@
 from typing import Any, Callable, Dict, Optional, Sized, TypeVar, cast
 
 from pydantic import WithJsonSchema
-from pydantic_core import PydanticCustomError
 from pydantic_core.core_schema import bytes_schema
+
+from eth_pydantic_types._error import SizeError
 
 __SIZED_T = TypeVar("__SIZED_T", bound=Sized)
 
@@ -21,7 +22,7 @@ def validate_size(value: __SIZED_T, size: int, coerce: Optional[Callable] = None
     elif coerce:
         return validate_size(coerce(value), size)
 
-    raise PydanticCustomError("value_size", "Invalid size of value", {"size": size, "value": value})
+    raise SizeError(size, value)
 
 
 def validate_bytes_size(value: bytes, size: int) -> bytes:

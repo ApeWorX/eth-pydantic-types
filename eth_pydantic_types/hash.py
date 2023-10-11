@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Optional
+from typing import Any, ClassVar, Optional, Tuple
 
 from pydantic_core.core_schema import (
     CoreSchema,
@@ -7,9 +7,17 @@ from pydantic_core.core_schema import (
     with_info_before_validator_function,
 )
 
-from eth_pydantic_types.hexbytes import HexBytes
+from eth_pydantic_types.hex import HexBytes
 from eth_pydantic_types.serializers import hex_serializer
 from eth_pydantic_types.validators import validate_bytes_size
+
+
+def get_hash_pattern(size: int) -> str:
+    return f"^0x[a-fA-F0-9]{{{size}}}$"
+
+
+def get_hash_examples(size: int) -> Tuple[str, str]:
+    return f"0x{'0' * (size * 2)}", f"0x{'1e' * size}"
 
 
 class Hash(HexBytes):
@@ -20,6 +28,8 @@ class Hash(HexBytes):
     """
 
     size: ClassVar[int] = 1
+    schema_pattern: ClassVar[str] = get_hash_pattern(1)
+    schema_examples: ClassVar[Tuple[str, ...]] = get_hash_examples(1)
 
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
         schema = with_info_before_validator_function(
@@ -37,49 +47,21 @@ class Hash(HexBytes):
         return validate_bytes_size(value, cls.size)
 
 
-class Hash4(Hash):
-    """
-    A hash that is 4-bytes.
-    """
-
-    size: ClassVar[int] = 4
-
-
-class Hash8(Hash):
-    """
-    A hash that is 8-bytes.
-    """
-
-    size: ClassVar[int] = 8
+def make_hash_cls(size: int):
+    return type(
+        f"Hash{size}",
+        (Hash,),
+        dict(
+            size=size,
+            schema_pattern=get_hash_pattern(size),
+            schema_examples=get_hash_examples(size),
+        ),
+    )
 
 
-class Hash16(Hash):
-    """
-    A hash that is 16-bytes.
-    """
-
-    size: ClassVar[int] = 16
-
-
-class Hash20(Hash):
-    """
-    A hash that is 20-bytes.
-    """
-
-    size: ClassVar[int] = 20
-
-
-class Hash32(Hash):
-    """
-    A hash that is 32-bytes.
-    """
-
-    size: ClassVar[int] = 32
-
-
-class Hash64(Hash):
-    """
-    A hash that is 64-bytes.
-    """
-
-    size: ClassVar[int] = 64
+Hash4 = make_hash_cls(4)
+Hash8 = make_hash_cls(8)
+Hash16 = make_hash_cls(16)
+Hash20 = make_hash_cls(20)
+Hash32 = make_hash_cls(32)
+Hash64 = make_hash_cls(64)

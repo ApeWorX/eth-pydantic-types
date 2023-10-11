@@ -2,7 +2,7 @@ import pytest
 from pydantic import BaseModel, ValidationError
 
 from eth_pydantic_types.hash import Hash8, Hash16, Hash32, Hash64
-from eth_pydantic_types.hexbytes import HexBytes
+from eth_pydantic_types.hex import HexBytes
 
 
 class Model(BaseModel):
@@ -50,6 +50,9 @@ def test_schema():
         assert prop["minLength"] == size_from_name
         assert prop["type"] == "string"
         assert prop["format"] == "binary"
+        assert prop["pattern"] == f"^0x[a-fA-F0-9]{{{size_from_name}}}$"
+        assert prop["examples"][0] == f"0x{'0' * size_from_name * 2}"
+        assert len(prop["examples"][1]) == size_from_name * 2 + 2
 
 
 def test_model_dump(bytes32str):
