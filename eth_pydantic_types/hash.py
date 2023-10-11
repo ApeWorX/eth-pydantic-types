@@ -28,8 +28,9 @@ def _get_hash_examples(str_size: int) -> Tuple[str, str, str, str]:
 class HashBytes(HexBytes):
     """
     Represents a single-slot static hash as bytes.
+    This type is meant to be overridden by the larger hash types with a new size.
     The class variable "size" is overridden in subclasses for each byte-size,
-    e.g. HashBytes4, HashBytes20, HashBytes32.
+    e.g. HashBytes20, HashBytes32.
     """
 
     size: ClassVar[int] = 1
@@ -55,8 +56,8 @@ class HashBytes(HexBytes):
 class HashStr(BaseHexStr):
     """
     Represents a single-slot static hash as a str.
-    The class variable "size" is overridden in subclasses for each byte-size,
-    e.g. HashStr4, HashStr20, HashStr32.
+    This type is meant to be overridden by the larger hash types with a new size.
+    e.g. HashStr20, HashStr32.
     """
 
     size: ClassVar[int] = 1
