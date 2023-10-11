@@ -84,21 +84,21 @@ class HexStr(BaseHexStr):
             return cls.from_bytes(data)
 
         elif isinstance(data, str):
-            return cls._validate_hex_str(data)
+            return validate_hex_str(data)
 
         elif isinstance(data, int):
             return BaseHexBytes(data).hex()
 
         raise HexValueError(data)
 
-    @classmethod
-    def _validate_hex_str(cls, data: str) -> str:
-        hex_value = (data[2:] if data.startswith("0x") else data).lower()
-        if set(hex_value) - set("1234567890abcdef"):
-            raise HexValueError(data)
 
-        # Missing zero padding.
-        if len(hex_value) % 2 != 0:
-            hex_value = f"0{hex_value}"
+def validate_hex_str(value: str) -> str:
+    hex_value = (value[2:] if value.startswith("0x") else value).lower()
+    if set(hex_value) - set("1234567890abcdef"):
+        raise HexValueError(value)
 
-        return f"0x{hex_value}"
+    # Missing zero padding.
+    if len(hex_value) % 2 != 0:
+        hex_value = f"0{hex_value}"
+
+    return f"0x{hex_value}"
