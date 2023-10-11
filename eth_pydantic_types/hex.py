@@ -79,6 +79,10 @@ class HexStr(BaseHexStr):
         return no_info_before_validator_function(cls.validate_hex, str_schema())
 
     @classmethod
+    def from_bytes(cls, data: bytes) -> "HexStr":
+        return HexStr(super().from_bytes(data))
+
+    @classmethod
     def validate_hex(cls, data: Union[bytes, str, int]):
         if isinstance(data, bytes):
             return cls.from_bytes(data)
