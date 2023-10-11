@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, Optional
 
 from pydantic_core import CoreSchema
@@ -9,6 +10,12 @@ from pydantic_core.core_schema import (
 
 from eth_pydantic_types._error import Bip122UriFormatError
 from eth_pydantic_types.hex import validate_hex_str
+
+
+class Bip122UriType(Enum):
+    TX = "tx"
+    BLOCK = "block"
+    ADDRESS = "address"
 
 
 class Bip122Uri(str):
@@ -42,8 +49,8 @@ class Bip122Uri(str):
             raise Bip122UriFormatError(value)
 
         genesis_hash, block_keyword, block_hash = protocol_parsed
-
-        if block_keyword != "block":
+        block_keyword = block_keyword.lower()
+        if block_keyword not in [x.value for x in Bip122UriType]:
             raise Bip122UriFormatError(value)
 
         validated_genesis_hash = validate_hex_str(genesis_hash)[2:]
