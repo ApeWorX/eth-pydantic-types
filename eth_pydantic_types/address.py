@@ -46,6 +46,6 @@ class Address(BaseHexStr):
             value = HexBytes(value).hex()
 
         number = value[2:] if value.startswith("0x") else value
-        number_padded = validate_address_size(number, 40)
+        number_padded = validate_address_size(number)
         value = f"0x{number_padded}"
         return to_checksum_address(value)

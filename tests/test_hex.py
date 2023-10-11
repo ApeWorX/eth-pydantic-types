@@ -104,3 +104,8 @@ def test_hexstr_model_dump(bytes32str):
     actual = model.model_dump()
     expected = {"value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}
     assert actual == expected
+
+    model = StrModel(value=3)
+    actual = model.model_dump()
+    expected = {"value": "0x03"}
+    assert actual == expected

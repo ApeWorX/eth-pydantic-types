@@ -2,25 +2,28 @@
 
 The types in this package are pydantic types for Ethereum inspired from [eth-typing](https://github.com/ethereum/eth-typing/blob/master/eth_typing/evm.py).
 
-## Hash32
+## Hash
 
-Hash32 is a good type to use for Ethereum transaction hashes.
-`Hash` types serialize to bytes in the Pydantic core schema and `string` in the JSON schema with a binary format.
-Use Hash32 like this:
+`HashBytes{n}` and `HashStr{n}` are good types to use when your hex values are sized.
+Both types serialize to `string` in the JSON schema.
+Use `HashBytes` types when you want types to serialize to bytes in the Pydantic core schema and `HashStr` types when you want to serialize to `str` in the core Pydantic schema.
 
 ```python
 from pydantic import BaseModel
 
-from eth_pydantic_types import Hash32
+from eth_pydantic_types import HashBytes32, HashStr20
 
+# When serializing to JSON, both types are hex strings.
 class Transaction(BaseModel):
-    tx_hash: Hash32
+    tx_hash: HashBytes32  # Will be bytes
+    address: HashStr20  # Will be str
 
 
 # NOTE: I am able to pass an int-hash as the value and it will
 #  get validated and type-coerced.
 tx = Transaction(
-    tx_hash=0x1031f0c9ac54dcb64b4f121a27957c14263c5cb49ed316d568e41e19c34d7b28
+    tx_hash=0x1031f0c9ac54dcb64b4f121a27957c14263c5cb49ed316d568e41e19c34d7b28,
+    address=0x1031f0c9ac54dcb64b4f121a27957c14263c5cb4,
 )
 ```
 

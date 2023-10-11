@@ -65,6 +65,19 @@ class BaseHexStr(str, BaseHex):
         hex_str = data.hex()
         return cls(hex_str if hex_str.startswith("0x") else hex_str)
 
+    @classmethod
+    def validate_hex(cls, data: Union[bytes, str, int]):
+        if isinstance(data, bytes):
+            return cls.from_bytes(data)
+
+        elif isinstance(data, str):
+            return validate_hex_str(data)
+
+        elif isinstance(data, int):
+            return BaseHexBytes(data).hex()
+
+        raise HexValueError(data)
+
     def __int__(self) -> int:
         return int(self, 16)
 
@@ -81,19 +94,6 @@ class HexStr(BaseHexStr):
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":
         return HexStr(super().from_bytes(data))
-
-    @classmethod
-    def validate_hex(cls, data: Union[bytes, str, int]):
-        if isinstance(data, bytes):
-            return cls.from_bytes(data)
-
-        elif isinstance(data, str):
-            return validate_hex_str(data)
-
-        elif isinstance(data, int):
-            return BaseHexBytes(data).hex()
-
-        raise HexValueError(data)
 
 
 def validate_hex_str(value: str) -> str:
