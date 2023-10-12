@@ -1,5 +1,6 @@
-from typing import Any, ClassVar, Optional, Tuple
+from typing import Any, ClassVar, Optional, Tuple, cast
 
+from eth_typing import ChecksumAddress
 from eth_utils import is_checksum_address, to_checksum_address
 from pydantic_core.core_schema import ValidationInfo, str_schema
 
@@ -32,5 +33,9 @@ class Address(HashStr20):
         return cls.to_checksum_address(value)
 
     @classmethod
-    def to_checksum_address(cls, value: str) -> str:
-        return value if is_checksum_address(value) else to_checksum_address(value)
+    def to_checksum_address(cls, value: str) -> ChecksumAddress:
+        return (
+            cast(ChecksumAddress, value)
+            if is_checksum_address(value)
+            else to_checksum_address(value)
+        )
