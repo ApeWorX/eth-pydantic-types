@@ -38,10 +38,10 @@ class HashBytes(HexBytes):
     schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
         schema = with_info_before_validator_function(
-            value.__eth_pydantic_validate__,
-            bytes_schema(max_length=value.size, min_length=value.size),
+            cls.__eth_pydantic_validate__,
+            bytes_schema(max_length=cls.size, min_length=cls.size),
         )
         schema["serialization"] = hex_serializer
         return schema
@@ -69,10 +69,10 @@ class HashStr(BaseHexStr):
     schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value) -> CoreSchema:
-        str_size = value.size * 2 + 2
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+        str_size = cls.size * 2 + 2
         return with_info_before_validator_function(
-            value.__eth_pydantic_validate__, str_schema(max_length=str_size, min_length=str_size)
+            cls.__eth_pydantic_validate__, str_schema(max_length=str_size, min_length=str_size)
         )
 
     @classmethod

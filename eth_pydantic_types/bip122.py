@@ -35,7 +35,7 @@ class Bip122Uri(str):
         return json_schema
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
         return with_info_before_validator_function(
             value.__eth_pydantic_validate__,
             str_schema(),

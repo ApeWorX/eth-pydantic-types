@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Optional, Tuple, cast
+from typing import Annotated, Any, ClassVar, Optional, Tuple, cast
 
 from eth_typing import ChecksumAddress
 from eth_utils import is_checksum_address, to_checksum_address
@@ -39,3 +39,13 @@ class Address(HashStr20):
             if is_checksum_address(value)
             else to_checksum_address(value)
         )
+
+
+"""
+A type that can be used in place of ``eth_typing.ChecksumAddress``.
+
+**NOTE**: We are unable to subclass ``eth_typing.ChecksumAddress``
+  in :class:`~eth_pydantic_types.address.Address` because it is
+  a NewType; that is why we offer this annotated approach.
+"""
+AddressType = Annotated[ChecksumAddress, Address]
