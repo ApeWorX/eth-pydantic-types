@@ -45,7 +45,7 @@ class HexBytes(BaseHexBytes, BaseHex):
     """
 
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
-        schema = with_info_before_validator_function(self._validate_hexbytes, bytes_schema())
+        schema = with_info_before_validator_function(self.__eth_pydantic_validate__, bytes_schema())
         schema["serialization"] = hex_serializer
         return schema
 
@@ -55,11 +55,20 @@ class HexBytes(BaseHexBytes, BaseHex):
         return super().fromhex(value)
 
     @classmethod
-    def _validate_hexbytes(cls, value: Any, info: Optional[ValidationInfo] = None) -> BaseHexBytes:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> BaseHexBytes:
         return BaseHexBytes(value)
 
 
 class BaseHexStr(str, BaseHex):
+    def __get_pydantic_core_schema__(cls, *args, **kwargs):
+        return no_info_before_validator_function(cls.__eth_pydantic_validate__, str_schema())
+
+    @classmethod
+    def __eth_pydantic_validate__(cls, value):
+        return value  # Override.
+
     @classmethod
     def from_bytes(cls, data: bytes) -> "BaseHexStr":
         hex_str = data.hex()
@@ -88,8 +97,9 @@ class BaseHexStr(str, BaseHex):
 class HexStr(BaseHexStr):
     """A hex string value, typically from a hash."""
 
-    def __get_pydantic_core_schema__(cls, *args, **kwargs):
-        return no_info_before_validator_function(cls.validate_hex, str_schema())
+    @classmethod
+    def __eth_pydantic_validate__(cls, value):
+        return cls.validate_hex(value)
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":

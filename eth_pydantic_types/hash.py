@@ -39,13 +39,15 @@ class HashBytes(HexBytes):
 
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
         schema = with_info_before_validator_function(
-            self._validate_hash, bytes_schema(max_length=self.size, min_length=self.size)
+            self.__eth_pydantic_validate__, bytes_schema(max_length=self.size, min_length=self.size)
         )
         schema["serialization"] = hex_serializer
         return schema
 
     @classmethod
-    def _validate_hash(cls, value: Any, info: Optional[ValidationInfo] = None) -> bytes:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> HexBytes:
         return cls(cls.validate_size(HexBytes(value)))
 
     @classmethod
@@ -67,11 +69,11 @@ class HashStr(BaseHexStr):
     def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
         str_size = self.size * 2 + 2
         return with_info_before_validator_function(
-            self._validate_hash, str_schema(max_length=str_size, min_length=str_size)
+            self.__eth_pydantic_validate__, str_schema(max_length=str_size, min_length=str_size)
         )
 
     @classmethod
-    def _validate_hash(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         sized_value = cls.validate_size(hex_value)
