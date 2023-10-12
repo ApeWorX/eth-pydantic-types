@@ -1,8 +1,9 @@
-from typing import Annotated, Any, ClassVar, Optional, Tuple, cast
+from typing import Any, ClassVar, Optional, Tuple, cast
 
 from eth_typing import ChecksumAddress
 from eth_utils import is_checksum_address, to_checksum_address
 from pydantic_core.core_schema import ValidationInfo, str_schema
+from typing_extensions import Annotated
 
 from eth_pydantic_types.hash import HashStr20
 
