@@ -44,8 +44,11 @@ class HexBytes(BaseHexBytes, BaseHex):
     a pydantic validator and serializer.
     """
 
-    def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
-        schema = with_info_before_validator_function(self.__eth_pydantic_validate__, bytes_schema())
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value) -> CoreSchema:
+        schema = with_info_before_validator_function(
+            value.__eth_pydantic_validate__, bytes_schema()
+        )
         schema["serialization"] = hex_serializer
         return schema
 
@@ -62,8 +65,9 @@ class HexBytes(BaseHexBytes, BaseHex):
 
 
 class BaseHexStr(str, BaseHex):
-    def __get_pydantic_core_schema__(cls, *args, **kwargs):
-        return no_info_before_validator_function(cls.__eth_pydantic_validate__, str_schema())
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value):
+        return no_info_before_validator_function(value.__eth_pydantic_validate__, str_schema())
 
     @classmethod
     def __eth_pydantic_validate__(cls, value):
