@@ -74,9 +74,11 @@ setup(
     include_package_data=True,
     install_requires=[
         "hexbytes>=0.3.0,<1",
-        "eth-utils>=2.2.0,<3",
         "eth-hash[pycryptodome]>=0.5.2,<1",
+        "eth-utils>=2.2.0,<3",
+        "eth-typing>=3.5.0,<4",
         "pydantic>=2.4.2,<3",
+        "typing_extensions>=4.8.0,<5",
     ],
     python_requires=">=3.8,<4",
     extras_require=extras_require,

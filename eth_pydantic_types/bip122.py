@@ -34,14 +34,15 @@ class Bip122Uri(str):
         json_schema.update(examples=[example], pattern=pattern)
         return json_schema
 
-    def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
         return with_info_before_validator_function(
-            self._validate,
+            value.__eth_pydantic_validate__,
             str_schema(),
         )
 
     @classmethod
-    def _validate(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         if not value.startswith(cls.prefix):
             raise Bip122UriFormatError(value)
 

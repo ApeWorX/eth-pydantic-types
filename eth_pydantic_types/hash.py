@@ -37,15 +37,19 @@ class HashBytes(HexBytes):
     schema_pattern: ClassVar[str] = _get_hash_pattern(1)
     schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
 
-    def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
         schema = with_info_before_validator_function(
-            self._validate_hash, bytes_schema(max_length=self.size, min_length=self.size)
+            cls.__eth_pydantic_validate__,
+            bytes_schema(max_length=cls.size, min_length=cls.size),
         )
         schema["serialization"] = hex_serializer
         return schema
 
     @classmethod
-    def _validate_hash(cls, value: Any, info: Optional[ValidationInfo] = None) -> bytes:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> HexBytes:
         return cls(cls.validate_size(HexBytes(value)))
 
     @classmethod
@@ -64,14 +68,15 @@ class HashStr(BaseHexStr):
     schema_pattern: ClassVar[str] = _get_hash_pattern(1)
     schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
 
-    def __get_pydantic_core_schema__(self, *args, **kwargs) -> CoreSchema:
-        str_size = self.size * 2 + 2
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+        str_size = cls.size * 2 + 2
         return with_info_before_validator_function(
-            self._validate_hash, str_schema(max_length=str_size, min_length=str_size)
+            cls.__eth_pydantic_validate__, str_schema(max_length=str_size, min_length=str_size)
         )
 
     @classmethod
-    def _validate_hash(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         sized_value = cls.validate_size(hex_value)

@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from eth_pydantic_types.address import Address
+from eth_pydantic_types.address import Address, AddressType
 from eth_pydantic_types.hex import HexBytes
 
 # NOTE: This address purposely is the wrong length (missing left zero),
@@ -12,6 +12,7 @@ CHECKSUM_ADDRESS = "0x0837207e343277CBd6c114a45EC0e9Ec56a1AD84"
 
 class Model(BaseModel):
     address: Address
+    address_type: AddressType
 
 
 @pytest.fixture
@@ -31,14 +32,15 @@ def checksum_address():
     ),
 )
 def test_address(address, checksum_address):
-    actual = Model(address=address)
+    actual = Model(address=address, address_type=address)
     assert actual.address == checksum_address
+    assert actual.address_type == checksum_address
 
 
 @pytest.mark.parametrize("address", ("foo", -35, "0x" + ("F" * 100)))
 def test_invalid_address(address):
     with pytest.raises(ValidationError):
-        Model(address=address)
+        Model(address=address, address_type=address)
 
 
 def test_schema():
@@ -57,7 +59,7 @@ def test_schema():
 
 
 def test_model_dump():
-    model = Model(address=ADDRESS)
+    model = Model(address=ADDRESS, address_type=ADDRESS)
     actual = model.model_dump()
-    expected = {"address": CHECKSUM_ADDRESS}
+    expected = {"address": CHECKSUM_ADDRESS, "address_type": CHECKSUM_ADDRESS}
     assert actual == expected

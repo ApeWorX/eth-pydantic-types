@@ -1,4 +1,4 @@
-from .address import Address
+from .address import Address, AddressType
 from .bip122 import Bip122Uri
 from .hash import (
     HashBytes4,
@@ -18,6 +18,7 @@ from .hex import HexBytes, HexStr
 
 __all__ = [
     "Address",
+    "AddressType",
     "Bip122Uri",
     "HashBytes4",
     "HashBytes8",
