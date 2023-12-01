@@ -7,19 +7,19 @@ here = Path(__file__).parent.absolute()
 
 extras_require = {
     "test": [  # `test` GitHub Action jobs uses this
-        "pytest-xdist",  # multi-process runner
+        "pytest-xdist",  # Multi-process runner
         "pytest-cov>=4.0.0,<5",  # Coverage analyzer plugin
         "pytest-mock",  # For creating mocks
         "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
         "hypothesis-jsonschema==0.19.0",  # JSON Schema fuzzer extension
     ],
     "lint": [
-        "black>=23.9.1,<24",  # Auto-formatter and linter
-        "mypy>=1.5.1,<2",  # Static type analyzer
-        "types-setuptools",  # Needed due to mypy typeshed
+        "black>=23.11.0,<24",  # Auto-formatter and linter
+        "mypy>=1.7.1,<2",  # Static type analyzer
+        "types-setuptools",  # Needed for mypy type shed
         "flake8>=6.1.0,<7",  # Style linter
-        "flake8-breakpoint>=1.1.0,<2",  # detect breakpoints left in code
-        "flake8-print>=4.0.1,<5",  # detect print statements left in code
+        "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
+        "flake8-print>=5.0.0,<6",  # Detect print statements left in code
         "isort>=5.10.1,<6",  # Import sorting linter
         "mdformat>=0.7.17",  # Auto-formatter for markdown
         "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
