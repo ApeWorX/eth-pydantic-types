@@ -70,7 +70,7 @@ setup(
     long_description_content_type="text/markdown",
     author="ApeWorX Ltd.",
     author_email="admin@apeworx.io",
-    url="https://github.com/ApeWorX/evm-pydantic-types",
+    url="https://github.com/ApeWorX/eth-pydantic-types",
     include_package_data=True,
     install_requires=[
         "hexbytes>=0.3.0,<1",
