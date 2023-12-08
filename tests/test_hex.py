@@ -109,3 +109,9 @@ def test_hexstr_model_dump(bytes32str):
     actual = model.model_dump()
     expected = {"value": "0x03"}
     assert actual == expected
+
+
+def test_from_bytes():
+    value = b"\xb7\xfc\xef\x7f\xe7E\xf2\xa9U`\xff_U\x0e;\x8f"
+    actual = HexStr.from_bytes(value)
+    assert actual.startswith("0x")

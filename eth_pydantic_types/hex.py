@@ -1,5 +1,7 @@
-from typing import Any, ClassVar, Optional, Tuple, Union
+from typing import Any, ClassVar, Optional, Tuple, Union, cast
 
+from eth_typing import HexStr as EthTypingHexStr
+from eth_utils import add_0x_prefix
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic_core import CoreSchema
 from pydantic_core.core_schema import (
@@ -105,7 +107,9 @@ class HexStr(BaseHexStr):
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":
-        return HexStr(super().from_bytes(data))
+        value_str = super().from_bytes(data)
+        value = add_0x_prefix(cast(EthTypingHexStr, value_str))
+        return HexStr(value)
 
 
 def validate_hex_str(value: str) -> str:
