@@ -2,6 +2,7 @@ import pytest
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic import BaseModel, ValidationError
 
+from eth_pydantic_types import HashStr20
 from eth_pydantic_types.hex import HexBytes, HexStr
 
 
@@ -115,3 +116,16 @@ def test_from_bytes():
     value = b"\xb7\xfc\xef\x7f\xe7E\xf2\xa9U`\xff_U\x0e;\x8f"
     actual = HexStr.from_bytes(value)
     assert actual.startswith("0x")
+
+
+def test_hex_removes_leading_zeroes_if_needed():
+    address = "0x000000000000000000000000cafac3dd18ac6c6e92c921884f9e4176737c052c"
+
+    class MyModel(BaseModel):
+        my_address: HashStr20
+
+    # Test both str and bytes for input.
+    for addr in (address, HexBytes(address)):
+        model = MyModel(my_address=addr)
+        assert len(model.my_address) == 42
+        assert model.my_address == "0xcafac3dd18ac6c6e92c921884f9e4176737c052c"

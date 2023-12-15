@@ -4,6 +4,7 @@ from pydantic import BaseModel, ValidationError
 from eth_pydantic_types.hash import (
     HashBytes8,
     HashBytes16,
+    HashBytes20,
     HashBytes32,
     HashBytes64,
     HashStr8,
@@ -17,6 +18,7 @@ from eth_pydantic_types.hex import HexBytes
 class Model(BaseModel):
     valuebytes8: HashBytes8
     valuebytes16: HashBytes16
+    valuebytes20: HashBytes20
     valuebytes32: HashBytes32
     valuebytes64: HashBytes64
     valuestr8: HashStr8
@@ -29,6 +31,7 @@ class Model(BaseModel):
         return cls(
             valuebytes8=value,
             valuebytes16=value,
+            valuebytes20=value,
             valuebytes32=value,
             valuebytes64=value,
             valuestr8=value,
@@ -54,6 +57,7 @@ def test_hash(value):
     model = Model.from_single(value)
     assert len(model.valuebytes8) == 8
     assert len(model.valuebytes16) == 16
+    assert len(model.valuebytes20) == 20
     assert len(model.valuebytes32) == 32
     assert len(model.valuebytes64) == 64
     assert len(model.valuestr8) == 18
@@ -74,6 +78,19 @@ def test_hash(value):
 def test_invalid_hash(value):
     with pytest.raises(ValidationError):
         Model.from_single(value)
+
+
+def test_hash_removes_leading_zeroes_if_needed():
+    address = "0x000000000000000000000000cafac3dd18ac6c6e92c921884f9e4176737c052c"
+
+    class MyModel(BaseModel):
+        my_address: HashBytes20
+
+    # Test both str and bytes for input.
+    for addr in (address, HexBytes(address)):
+        model = MyModel(my_address=addr)
+        assert len(model.my_address) == 20
+        assert model.my_address == HexBytes("0xcafac3dd18ac6c6e92c921884f9e4176737c052c")
 
 
 def test_schema():
