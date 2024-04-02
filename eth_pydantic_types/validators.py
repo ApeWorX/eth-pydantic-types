@@ -1,4 +1,5 @@
-from typing import Any, Callable, Dict, Optional, Sized, TypeVar, cast
+from collections.abc import Sized
+from typing import Any, Callable, Optional, TypeVar, cast
 
 from pydantic import WithJsonSchema
 from pydantic_core.core_schema import bytes_schema
@@ -11,7 +12,7 @@ __SIZED_T = TypeVar("__SIZED_T", bound=Sized)
 class WithBytesSchema(WithJsonSchema):
     def __init__(self, **kwargs):
         mode = kwargs.pop("mode", None)
-        schema = cast(Dict[str, Any], bytes_schema(**kwargs))
+        schema = cast(dict[str, Any], bytes_schema(**kwargs))
         super().__init__(schema, mode=mode)
 
 

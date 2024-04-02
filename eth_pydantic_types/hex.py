@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Optional, Tuple, Union, cast
+from typing import Any, ClassVar, Optional, Union, cast
 
 from eth_typing import HexStr as EthTypingHexStr
 from eth_utils import add_0x_prefix
@@ -29,7 +29,7 @@ schema_examples = (
 
 class BaseHex:
     schema_pattern: ClassVar[str] = schema_pattern
-    schema_examples: ClassVar[Tuple[str, ...]] = schema_examples
+    schema_examples: ClassVar[tuple[str, ...]] = schema_examples
 
     @classmethod
     def __get_pydantic_json_schema__(cls, core_schema, handler):
@@ -75,8 +75,9 @@ class BaseHexStr(str, BaseHex):
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "BaseHexStr":
-        hex_str = data.hex()
-        return cls(hex_str if hex_str.startswith("0x") else hex_str)
+        hex_value = data.hex()
+        hex_str = hex_value if hex_value.startswith("0x") else f"0x{hex_value}"
+        return cls(hex_str)
 
     @classmethod
     def validate_hex(cls, data: Union[bytes, str, int]):
@@ -87,7 +88,8 @@ class BaseHexStr(str, BaseHex):
             return validate_hex_str(data)
 
         elif isinstance(data, int):
-            return BaseHexBytes(data).hex()
+            hex_value = BaseHexBytes(data).hex()
+            return hex_value if hex_value.startswith("0x") else f"0x{hex_value}"
 
         raise HexValueError(data)
 
