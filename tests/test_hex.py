@@ -20,7 +20,7 @@ def test_hexbytes(value):
 
     # The end result, the value is a hexbytes.HexBytes
     assert actual.value == BaseHexBytes(value)
-    assert actual.value.hex() == "0x0a"
+    assert actual.value.hex() == "0a"
     assert isinstance(actual.value, bytes)
     assert isinstance(actual.value, BaseHexBytes)
 

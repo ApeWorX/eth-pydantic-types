@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import cached_property
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 from pydantic_core import CoreSchema
 from pydantic_core.core_schema import (
@@ -50,7 +50,7 @@ class Bip122Uri(str):
         return f"{cls.prefix}{genesis_hash[2:]}/{block_keyword.value}/{block_hash[2:]}"
 
     @classmethod
-    def parse(cls, value: str) -> Tuple[str, Bip122UriType, str]:
+    def parse(cls, value: str) -> tuple[str, Bip122UriType, str]:
         protocol_suffix = value.replace(cls.prefix, "")
         protocol_parsed = protocol_suffix.split("/")
         if len(protocol_parsed) != 3:
@@ -68,7 +68,7 @@ class Bip122Uri(str):
         )
 
     @cached_property
-    def parsed(self) -> Tuple[str, Bip122UriType, str]:
+    def parsed(self) -> tuple[str, Bip122UriType, str]:
         return self.parse(self)
 
     @property
