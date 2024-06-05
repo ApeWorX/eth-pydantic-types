@@ -95,6 +95,7 @@ setup(
         "Natural Language :: English",
         "Operating System :: MacOS",
         "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
