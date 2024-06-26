@@ -5,7 +5,7 @@ from eth_utils import is_checksum_address, to_checksum_address
 from pydantic_core.core_schema import ValidationInfo, str_schema
 from typing_extensions import Annotated
 
-from eth_pydantic_types.hash import HashStr20
+from .hex import HexStr20
 
 ADDRESS_PATTERN = "^0x[a-fA-F0-9]{40}$"
 
@@ -14,7 +14,7 @@ def address_schema():
     return str_schema(min_length=42, max_length=42, pattern=ADDRESS_PATTERN)
 
 
-class Address(HashStr20):
+class Address(HexStr20):
     """
     Use for address-types. Validates as a checksummed address. Left-pads zeroes
     if necessary.
