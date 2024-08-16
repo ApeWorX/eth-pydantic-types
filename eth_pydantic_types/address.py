@@ -28,7 +28,7 @@ class Address(HashStr20):
     )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: ValidationInfo | None = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         value = super().__eth_pydantic_validate__(value)
         return cls.to_checksum_address(value)
 
