@@ -47,9 +47,7 @@ class HashBytes(HexBytes):
         return schema
 
     @classmethod
-    def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
-    ) -> HexBytes:
+    def __eth_pydantic_validate__(cls, value: Any, info: ValidationInfo | None = None) -> HexBytes:
         return cls(cls.validate_size(HexBytes(value)))
 
     @classmethod
@@ -76,7 +74,7 @@ class HashStr(BaseHexStr):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: ValidationInfo | None = None) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         sized_value = cls.validate_size(hex_value)

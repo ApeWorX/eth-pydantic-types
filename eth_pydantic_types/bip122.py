@@ -42,7 +42,7 @@ class Bip122Uri(str):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: ValidationInfo | None = None) -> str:
         if not value.startswith(cls.prefix):
             raise Bip122UriFormatError(value)
 

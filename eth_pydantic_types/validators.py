@@ -16,7 +16,7 @@ class WithBytesSchema(WithJsonSchema):
         super().__init__(schema, mode=mode)
 
 
-def validate_size(value: __SIZED_T, size: int, coerce: Optional[Callable] = None) -> __SIZED_T:
+def validate_size(value: __SIZED_T, size: int, coerce: Callable | None = None) -> __SIZED_T:
     if len(value) == size:
         return value
 

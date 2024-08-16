@@ -59,7 +59,7 @@ class HexBytes(BaseHexBytes, BaseHex):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
+        cls, value: Any, info: ValidationInfo | None = None
     ) -> BaseHexBytes:
         return BaseHexBytes(value)
 
@@ -80,7 +80,7 @@ class BaseHexStr(str, BaseHex):
         return cls(hex_str)
 
     @classmethod
-    def validate_hex(cls, data: Union[bytes, str, int]):
+    def validate_hex(cls, data: bytes | str | int):
         if isinstance(data, bytes):
             return cls.from_bytes(data)
 
