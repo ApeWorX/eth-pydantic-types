@@ -74,6 +74,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "hexbytes>=1.2.0,<2",
+        "eth-hash[pycryptodome]",
         "eth-utils>=4.1.0,<5",
         "eth-typing>=4.1.0,<5",
         "pydantic>=2.5.2,<3",
