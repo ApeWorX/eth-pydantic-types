@@ -14,10 +14,10 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # JSON Schema fuzzer extension
     ],
     "lint": [
-        "black>=24.3.0,<25",  # Auto-formatter and linter
-        "mypy>=1.9.0,<2",  # Static type analyzer
+        "black>=24.8.0,<25",  # Auto-formatter and linter
+        "mypy>=1.11.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
-        "flake8>=7.0.0,<8",  # Style linter
+        "flake8>=7.1.1,<8",  # Style linter
         "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
         "flake8-print>=5.0.0,<6",  # Detect print statements left in code
         "isort>=5.10.1,<6",  # Import sorting linter
@@ -73,14 +73,14 @@ setup(
     url="https://github.com/ApeWorX/eth-pydantic-types",
     include_package_data=True,
     install_requires=[
-        "hexbytes>=0.3.0,<1",
-        "eth-hash[pycryptodome]>=0.5.2,<1",
-        "eth-utils>=2.2.0,<3",
-        "eth-typing>=3.5.0,<4",
-        "pydantic>=2.4.2,<3",
+        "hexbytes>=1.2.0,<2",
+        "eth-hash[pycryptodome]",
+        "eth-utils>=5.0.0,<6",
+        "eth-typing>=5.0.0,<6",
+        "pydantic>=2.5.2,<3",
         "typing_extensions>=4.8.0,<5",
     ],
-    python_requires=">=3.8,<4",
+    python_requires=">=3.9,<4",
     extras_require=extras_require,
     py_modules=["eth_pydantic_types"],
     license="Apache-2.0",
@@ -97,7 +97,6 @@ setup(
         "Operating System :: POSIX",
         "Operating System :: Microsoft :: Windows",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
