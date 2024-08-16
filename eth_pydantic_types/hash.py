@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Optional, Tuple, Type
+from typing import Any, ClassVar, Optional
 
 from pydantic_core.core_schema import (
     CoreSchema,
@@ -17,7 +17,7 @@ def _get_hash_pattern(str_size: int) -> str:
     return f"^0x[a-fA-F0-9]{{{str_size}}}$"
 
 
-def _get_hash_examples(str_size: int) -> Tuple[str, str, str, str]:
+def _get_hash_examples(str_size: int) -> tuple[str, str, str, str]:
     zero_hash = f"0x{'0' * str_size}"
     leading_zero = f"0x01{'1e' * ((str_size - 1) // 2)}"
     trailing_zero = f"0x{'1e' * ((str_size - 1) // 2)}10"
@@ -35,7 +35,7 @@ class HashBytes(HexBytes):
 
     size: ClassVar[int] = 1
     schema_pattern: ClassVar[str] = _get_hash_pattern(1)
-    schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
+    schema_examples: ClassVar[tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
@@ -66,7 +66,7 @@ class HashStr(BaseHexStr):
 
     size: ClassVar[int] = 1
     schema_pattern: ClassVar[str] = _get_hash_pattern(1)
-    schema_examples: ClassVar[Tuple[str, ...]] = _get_hash_examples(1)
+    schema_examples: ClassVar[tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
@@ -87,7 +87,7 @@ class HashStr(BaseHexStr):
         return validate_str_size(value, cls.size * 2)
 
 
-def _make_hash_cls(size: int, base_type: Type):
+def _make_hash_cls(size: int, base_type: type):
     if issubclass(base_type, bytes):
         suffix = "Bytes"
         base_type = HashBytes
