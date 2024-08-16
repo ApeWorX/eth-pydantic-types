@@ -14,10 +14,10 @@ extras_require = {
         "hypothesis-jsonschema==0.19.0",  # JSON Schema fuzzer extension
     ],
     "lint": [
-        "black>=24.3.0,<25",  # Auto-formatter and linter
-        "mypy>=1.9.0,<2",  # Static type analyzer
+        "black>=24.8.0,<25",  # Auto-formatter and linter
+        "mypy>=1.11.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
-        "flake8>=7.0.0,<8",  # Style linter
+        "flake8>=7.1.1,<8",  # Style linter
         "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
         "flake8-print>=5.0.0,<6",  # Detect print statements left in code
         "isort>=5.10.1,<6",  # Import sorting linter
