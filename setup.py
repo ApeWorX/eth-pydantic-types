@@ -12,6 +12,7 @@ extras_require = {
         "pytest-mock",  # For creating mocks
         "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
         "hypothesis-jsonschema==0.19.0",  # JSON Schema fuzzer extension
+        "eth-hash[pycryptodome]",  # For backends to work
     ],
     "lint": [
         "black>=24.8.0,<25",  # Auto-formatter and linter
@@ -73,10 +74,9 @@ setup(
     url="https://github.com/ApeWorX/eth-pydantic-types",
     include_package_data=True,
     install_requires=[
-        "hexbytes>=1.2.0,<2",
-        "eth-hash[pycryptodome]",
-        "eth-utils>=5.0.0,<6",
-        "eth-typing>=5.0.0,<6",
+        "hexbytes>=0.3.1,<2",
+        "eth-utils>=2.3.1,<6",
+        "eth-typing>=3.5.2,<6",
         "pydantic>=2.5.2,<3",
         "typing_extensions>=4.8.0,<5",
     ],
