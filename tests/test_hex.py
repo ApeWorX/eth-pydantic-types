@@ -1,4 +1,5 @@
 import pytest
+from eth_utils import to_hex
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic import BaseModel, ValidationError
 
@@ -20,7 +21,7 @@ def test_hexbytes(value):
 
     # The end result, the value is a hexbytes.HexBytes
     assert actual.value == BaseHexBytes(value)
-    assert actual.value.hex() == "0a"
+    assert to_hex(actual.value) == "0x0a"
     assert isinstance(actual.value, bytes)
     assert isinstance(actual.value, BaseHexBytes)
 
