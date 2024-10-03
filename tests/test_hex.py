@@ -1,3 +1,5 @@
+from typing import Any
+
 import pytest
 from eth_utils import to_hex
 from hexbytes import HexBytes as BaseHexBytes
@@ -66,6 +68,22 @@ def test_hexbytes_model_dump_json(bytes32str):
     model = BytesModel(value=bytes32str)
     actual = model.model_dump_json()
     expected = '{"value":"0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}'
+    assert actual == expected
+
+
+def test_hexbytes_used_in_dict_any(bytes32str):
+    class MyModel(BaseModel):
+        my_map: dict[str, Any] = {}
+
+    data = {"my_map": {"some_bytes": [bytes32str]}}
+    model = MyModel.model_validate(data)
+
+    # NOTE: There was a concern with using this type in Any.
+    actual = model.model_dump_json()
+    expected = (
+        '{"my_map":{"some_bytes":'
+        '["0x9B70BD98CCB5B6434C2EAD14D68D15F392435A06FF469F8D1F8CF38B2AE0B0E2"]}}'
+    )
     assert actual == expected
 
 
