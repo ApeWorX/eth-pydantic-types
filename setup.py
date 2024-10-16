@@ -74,7 +74,7 @@ setup(
     url="https://github.com/ApeWorX/eth-pydantic-types",
     include_package_data=True,
     install_requires=[
-        "hexbytes>=0.3.1,<2",
+        "hexbytes>=1.2.0,<2",
         "eth-utils>=2.3.1,<6",
         "eth-typing>=3.5.2,<6",
         "pydantic>=2.5.2,<3",

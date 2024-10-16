@@ -2,7 +2,7 @@ from typing import Any, ClassVar, Optional, Union, cast
 
 from eth_typing import HexStr as EthTypingHexStr
 from eth_utils import add_0x_prefix
-from hexbytes import HexBytes as BaseHexBytes
+from hexbytes.main import HexBytes as BaseHexBytes
 from pydantic_core import CoreSchema
 from pydantic_core.core_schema import (
     ValidationInfo,
@@ -11,9 +11,17 @@ from pydantic_core.core_schema import (
     str_schema,
     with_info_before_validator_function,
 )
+from typing_extensions import TypeAlias
 
 from eth_pydantic_types._error import HexValueError
 from eth_pydantic_types.serializers import hex_serializer
+from eth_pydantic_types.utils import (
+    get_hash_examples,
+    get_hash_pattern,
+    validate_bytes_size,
+    validate_hex_str,
+    validate_str_size,
+)
 
 schema_pattern = "^0x([0-9a-f][0-9a-f])*$"
 schema_examples = (
@@ -28,6 +36,7 @@ schema_examples = (
 
 
 class BaseHex:
+    size: ClassVar[int] = 0
     schema_pattern: ClassVar[str] = schema_pattern
     schema_examples: ClassVar[tuple[str, ...]] = schema_examples
 
@@ -48,7 +57,10 @@ class HexBytes(BaseHexBytes, BaseHex):
 
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handle=None) -> CoreSchema:
-        schema = with_info_before_validator_function(cls.__eth_pydantic_validate__, bytes_schema())
+        schema = with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            bytes_schema(),
+        )
         schema["serialization"] = hex_serializer
         return schema
 
@@ -61,7 +73,43 @@ class HexBytes(BaseHexBytes, BaseHex):
     def __eth_pydantic_validate__(
         cls, value: Any, info: Optional[ValidationInfo] = None
     ) -> BaseHexBytes:
-        return BaseHexBytes(value)
+        return cls(cls.validate_size(HexBytes(value)))
+
+    @classmethod
+    def validate_size(cls, value: bytes) -> bytes:
+        return value
+
+
+class BoundHexBytes(HexBytes):
+    """
+    Use when receiving ``hexbytes.HexBytes`` values and a specific size is required.
+    Includes a pydantic validator and serializer.
+    """
+
+    size: ClassVar[int] = 32
+
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handle=None) -> CoreSchema:
+        schema = with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            bytes_schema(max_length=cls.size, min_length=cls.size),
+        )
+        schema["serialization"] = hex_serializer
+        return schema
+
+    @classmethod
+    def validate_size(cls, value: bytes) -> bytes:
+        str_size = cls.size * 2
+        cls.schema_pattern = get_hash_pattern(str_size)
+        cls.schema_examples = get_hash_examples(str_size)
+        return validate_bytes_size(value, cls.size)
+
+
+class HexBytes20(BoundHexBytes):
+    size: ClassVar[int] = 20
+
+
+HexBytes32: TypeAlias = BoundHexBytes
 
 
 class BaseHexStr(str, BaseHex):
@@ -104,8 +152,18 @@ class HexStr(BaseHexStr):
     """A hex string value, typically from a hash."""
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value):
-        return cls.validate_hex(value)
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+        return with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            str_schema(),
+        )
+
+    @classmethod
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+        hex_str = cls.validate_hex(value)
+        hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
+        sized_value = hex_value
+        return cls(f"0x{sized_value}")
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":
@@ -114,13 +172,38 @@ class HexStr(BaseHexStr):
         return HexStr(value)
 
 
-def validate_hex_str(value: str) -> str:
-    hex_value = (value[2:] if value.startswith("0x") else value).lower()
-    if set(hex_value) - set("1234567890abcdef"):
-        raise HexValueError(value)
+class BoundHexStr(BaseHexStr):
+    """A hex string value, typically from a hash, that is required to be a specific size."""
 
-    # Missing zero padding.
-    if len(hex_value) % 2 != 0:
-        hex_value = f"0{hex_value}"
+    size: ClassVar[int] = 32
+    calculate_schema: ClassVar[bool] = True
 
-    return f"0x{hex_value}"
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+        str_size = cls.size * 2 + 2
+        return with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            str_schema(max_length=str_size, min_length=str_size),
+        )
+
+    @classmethod
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+        hex_str = cls.validate_hex(value)
+        hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
+        sized_value = cls.validate_size(hex_value)
+        return cls(f"0x{sized_value}")
+
+    @classmethod
+    def validate_size(cls, value: str) -> str:
+        if cls.calculate_schema:
+            str_size = cls.size * 2
+            cls.schema_pattern = get_hash_pattern(str_size)
+            cls.schema_examples = get_hash_examples(str_size)
+        return validate_str_size(value, cls.size * 2)
+
+
+class HexStr20(BoundHexStr):
+    size: ClassVar[int] = 20
+
+
+HexStr32: TypeAlias = BoundHexStr
