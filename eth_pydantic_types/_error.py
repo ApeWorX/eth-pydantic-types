@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 
 def CustomError(fn: Callable, invalid_tag: str, **kwargs) -> "PydanticCustomError":
+    # perf: keep module loading super fast by localizing this import.
     from pydantic_core._pydantic_core import PydanticCustomError
 
     return PydanticCustomError(fn.__name__, f"Invalid {invalid_tag}", kwargs)
