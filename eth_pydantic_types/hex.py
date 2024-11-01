@@ -1,7 +1,5 @@
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, Union
 
-from eth_typing import HexStr as EthTypingHexStr
-from eth_utils import add_0x_prefix
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic_core.core_schema import (
     ValidationInfo,
@@ -113,7 +111,7 @@ class HexStr(BaseHexStr):
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":
         value_str = super().from_bytes(data)
-        value = add_0x_prefix(cast(EthTypingHexStr, value_str))
+        value = value_str if value_str.startswith("0x") else f"0x{value_str}"
         return HexStr(value)
 
 

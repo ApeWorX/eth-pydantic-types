@@ -1,22 +1,13 @@
 from collections.abc import Sized
-from typing import Any, Callable, Optional, TypeVar, cast
-
-from pydantic import WithJsonSchema
-from pydantic_core.core_schema import bytes_schema
+from typing import TYPE_CHECKING, Callable, Optional, TypeVar
 
 from eth_pydantic_types._error import SizeError
 
-__SIZED_T = TypeVar("__SIZED_T", bound=Sized)
+if TYPE_CHECKING:
+    __SIZED_T = TypeVar("__SIZED_T", bound=Sized)
 
 
-class WithBytesSchema(WithJsonSchema):
-    def __init__(self, **kwargs):
-        mode = kwargs.pop("mode", None)
-        schema = cast(dict[str, Any], bytes_schema(**kwargs))
-        super().__init__(schema, mode=mode)
-
-
-def validate_size(value: __SIZED_T, size: int, coerce: Optional[Callable] = None) -> __SIZED_T:
+def validate_size(value: "__SIZED_T", size: int, coerce: Optional[Callable] = None) -> "__SIZED_T":
     if len(value) == size:
         return value
 
