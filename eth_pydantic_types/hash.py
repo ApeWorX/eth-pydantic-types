@@ -110,13 +110,14 @@ def _make_hash_cls(size: int, base_type: type):
 def __getattr__(name: str):
     _type: type
     if name.startswith("HashBytes"):
+        number = name.replace("HashBytes", "")
         _type = bytes
     elif name.startswith("HashStr"):
+        number = name.replace("HashStr", "")
         _type = str
     else:
         raise AttributeError(name)
 
-    number = name[-1]
     if not number.isnumeric():
         raise AttributeError(name)
 
