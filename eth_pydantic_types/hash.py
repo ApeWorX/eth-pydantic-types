@@ -107,15 +107,17 @@ def _make_hash_cls(size: int, base_type: type):
     )
 
 
-HashBytes4 = _make_hash_cls(4, bytes)
-HashBytes8 = _make_hash_cls(8, bytes)
-HashBytes16 = _make_hash_cls(16, bytes)
-HashBytes20 = _make_hash_cls(20, bytes)
-HashBytes32 = _make_hash_cls(32, bytes)
-HashBytes64 = _make_hash_cls(64, bytes)
-HashStr4 = _make_hash_cls(4, str)
-HashStr8 = _make_hash_cls(8, str)
-HashStr16 = _make_hash_cls(16, str)
-HashStr20 = _make_hash_cls(20, str)
-HashStr32 = _make_hash_cls(32, str)
-HashStr64 = _make_hash_cls(64, str)
+def __getattr__(name: str):
+    _type: type
+    if name.startswith("HashBytes"):
+        _type = bytes
+    elif name.startswith("HashStr"):
+        _type = str
+    else:
+        raise AttributeError(name)
+
+    number = name[-1]
+    if not number.isnumeric():
+        raise AttributeError(name)
+
+    return _make_hash_cls(int(number), _type)
