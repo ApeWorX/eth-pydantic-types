@@ -121,3 +121,19 @@ def __getattr__(name: str):
         raise AttributeError(name)
 
     return _make_hash_cls(int(number), _type)
+
+
+__all__ = [
+    "HashBytes4",
+    "HashBytes8",
+    "HashBytes16",
+    "HashBytes20",
+    "HashBytes32",
+    "HashBytes64",
+    "HashStr4",
+    "HashStr8",
+    "HashStr16",
+    "HashStr20",
+    "HashStr32",
+    "HashStr64",
+]
