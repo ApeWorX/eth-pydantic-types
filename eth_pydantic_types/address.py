@@ -1,7 +1,7 @@
 from typing import Annotated, Any, ClassVar, Optional, cast
 
+from cchecksum import to_checksum_address
 from eth_typing import ChecksumAddress
-from eth_utils import is_checksum_address, to_checksum_address
 from pydantic_core.core_schema import ValidationInfo, str_schema
 
 from eth_pydantic_types.hash import HashStr20
@@ -34,11 +34,7 @@ class Address(HashStr20):
 
     @classmethod
     def to_checksum_address(cls, value: str) -> ChecksumAddress:
-        return (
-            cast(ChecksumAddress, value)
-            if is_checksum_address(value)
-            else to_checksum_address(value)
-        )
+        return to_checksum_address(value)
 
 
 """
