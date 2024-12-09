@@ -1,4 +1,4 @@
-from typing import Annotated, Any, ClassVar, Optional, cast
+from typing import Annotated, Any, ClassVar, Optional
 
 from cchecksum import to_checksum_address
 from eth_typing import ChecksumAddress
