@@ -1,9 +1,8 @@
-from typing import Any, ClassVar, Optional, Union, cast
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, Union, cast
 
 from eth_typing import HexStr as EthTypingHexStr
 from eth_utils import add_0x_prefix
 from hexbytes import HexBytes as BaseHexBytes
-from pydantic_core import CoreSchema
 from pydantic_core.core_schema import (
     ValidationInfo,
     bytes_schema,
@@ -14,6 +13,9 @@ from pydantic_core.core_schema import (
 
 from eth_pydantic_types._error import HexValueError
 from eth_pydantic_types.serializers import hex_serializer
+
+if TYPE_CHECKING:
+    from pydantic_core import CoreSchema
 
 schema_pattern = "^0x([0-9a-f][0-9a-f])*$"
 schema_examples = (
@@ -47,7 +49,7 @@ class HexBytes(BaseHexBytes, BaseHex):
     """
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handle=None) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handle=None) -> "CoreSchema":
         schema = with_info_before_validator_function(cls.__eth_pydantic_validate__, bytes_schema())
         schema["serialization"] = hex_serializer
         return schema
