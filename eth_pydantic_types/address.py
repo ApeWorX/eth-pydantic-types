@@ -35,7 +35,7 @@ class Address(HashStr20):
         return cls.to_checksum_address(value)
 
     @classmethod
-    def to_checksum_address(cls, value: str) -> ChecksumAddress:
+    def to_checksum_address(cls, value: str) -> "ChecksumAddress":
         # perf: localized import for module loading performance reasons.
         from cchecksum import to_checksum_address
         
