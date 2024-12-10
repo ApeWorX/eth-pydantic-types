@@ -1,8 +1,7 @@
 from enum import Enum
 from functools import cached_property
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
-from pydantic_core import CoreSchema
 from pydantic_core.core_schema import (
     ValidationInfo,
     str_schema,
@@ -11,6 +10,9 @@ from pydantic_core.core_schema import (
 
 from eth_pydantic_types._error import Bip122UriFormatError
 from eth_pydantic_types.hex import validate_hex_str
+
+if TYPE_CHECKING:
+    from pydantic_core import CoreSchema
 
 
 class Bip122UriType(Enum):
@@ -35,7 +37,7 @@ class Bip122Uri(str):
         return json_schema
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
         return with_info_before_validator_function(
             value.__eth_pydantic_validate__,
             str_schema(),

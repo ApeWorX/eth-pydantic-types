@@ -1,16 +1,13 @@
-from typing import Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Optional
 
-from pydantic_core.core_schema import (
-    CoreSchema,
-    ValidationInfo,
-    bytes_schema,
-    str_schema,
-    with_info_before_validator_function,
-)
+from pydantic_core.core_schema import bytes_schema, str_schema, with_info_before_validator_function
 
 from eth_pydantic_types.hex import BaseHexStr, HexBytes
 from eth_pydantic_types.serializers import hex_serializer
 from eth_pydantic_types.validators import validate_bytes_size, validate_str_size
+
+if TYPE_CHECKING:
+    from pydantic_core.core_schema import CoreSchema, ValidationInfo
 
 
 def _get_hash_pattern(str_size: int) -> str:
@@ -38,7 +35,7 @@ class HashBytes(HexBytes):
     schema_examples: ClassVar[tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
         schema = with_info_before_validator_function(
             cls.__eth_pydantic_validate__,
             bytes_schema(max_length=cls.size, min_length=cls.size),
@@ -48,7 +45,7 @@ class HashBytes(HexBytes):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
+        cls, value: Any, info: Optional["ValidationInfo"] = None
     ) -> HexBytes:
         return cls(cls.validate_size(HexBytes(value)))
 
@@ -69,14 +66,14 @@ class HashStr(BaseHexStr):
     schema_examples: ClassVar[tuple[str, ...]] = _get_hash_examples(1)
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handler=None) -> CoreSchema:
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
         str_size = cls.size * 2 + 2
         return with_info_before_validator_function(
             cls.__eth_pydantic_validate__, str_schema(max_length=str_size, min_length=str_size)
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(cls, value: Any, info: Optional["ValidationInfo"] = None) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         sized_value = cls.validate_size(hex_value)
@@ -107,15 +104,34 @@ def _make_hash_cls(size: int, base_type: type):
     )
 
 
-HashBytes4 = _make_hash_cls(4, bytes)
-HashBytes8 = _make_hash_cls(8, bytes)
-HashBytes16 = _make_hash_cls(16, bytes)
-HashBytes20 = _make_hash_cls(20, bytes)
-HashBytes32 = _make_hash_cls(32, bytes)
-HashBytes64 = _make_hash_cls(64, bytes)
-HashStr4 = _make_hash_cls(4, str)
-HashStr8 = _make_hash_cls(8, str)
-HashStr16 = _make_hash_cls(16, str)
-HashStr20 = _make_hash_cls(20, str)
-HashStr32 = _make_hash_cls(32, str)
-HashStr64 = _make_hash_cls(64, str)
+def __getattr__(name: str):
+    _type: type
+    if name.startswith("HashBytes"):
+        number = name.replace("HashBytes", "")
+        _type = bytes
+    elif name.startswith("HashStr"):
+        number = name.replace("HashStr", "")
+        _type = str
+    else:
+        raise AttributeError(name)
+
+    if not number.isnumeric():
+        raise AttributeError(name)
+
+    return _make_hash_cls(int(number), _type)
+
+
+__all__ = [
+    "HashBytes4",
+    "HashBytes8",
+    "HashBytes16",
+    "HashBytes20",
+    "HashBytes32",
+    "HashBytes64",
+    "HashStr4",
+    "HashStr8",
+    "HashStr16",
+    "HashStr20",
+    "HashStr32",
+    "HashStr64",
+]

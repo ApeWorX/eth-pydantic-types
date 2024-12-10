@@ -1,10 +1,12 @@
-from typing import Annotated, Any, ClassVar, Optional
+from functools import cached_property
+from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Optional
 
-from cchecksum import to_checksum_address
-from eth_typing import ChecksumAddress
 from pydantic_core.core_schema import ValidationInfo, str_schema
 
 from eth_pydantic_types.hash import HashStr20
+
+if TYPE_CHECKING:
+    from eth_typing import ChecksumAddress
 
 ADDRESS_PATTERN = "^0x[a-fA-F0-9]{40}$"
 
@@ -34,14 +36,41 @@ class Address(HashStr20):
 
     @classmethod
     def to_checksum_address(cls, value: str) -> ChecksumAddress:
+        # perf: localized import for module loading performance reasons.
+        from cchecksum import to_checksum_address
+        
         return to_checksum_address(value)
 
 
-"""
-A type that can be used in place of ``eth_typing.ChecksumAddress``.
+class _AddressTypeFactory:
+    @cached_property
+    def address_type(self):
+        from eth_typing import ChecksumAddress
 
-**NOTE**: We are unable to subclass ``eth_typing.ChecksumAddress``
-  in :class:`~eth_pydantic_types.address.Address` because it is
-  a NewType; that is why we offer this annotated approach.
-"""
-AddressType = Annotated[ChecksumAddress, Address]
+        # Lazy define for performance reasons.
+        AddressType = Annotated[ChecksumAddress, Address]
+        AddressType.__doc__ = """
+        A type that can be used in place of ``eth_typing.ChecksumAddress``.
+
+        **NOTE**: We are unable to subclass ``eth_typing.ChecksumAddress``
+          in :class:`~eth_pydantic_types.address.Address` because it is
+          a NewType; that is why we offer this annotated approach.
+        """
+        return AddressType
+
+
+_factory = _AddressTypeFactory()
+
+
+def __getattr__(name: str):
+    if name == "Address":
+        return Address
+
+    elif name == "AddressType":
+        return _factory.address_type
+
+
+__all__ = [
+    "AddressType",
+    "Address",
+]

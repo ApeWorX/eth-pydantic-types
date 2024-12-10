@@ -15,17 +15,19 @@ extras_require = {
         "eth-hash[pycryptodome]",  # For backends to work
     ],
     "lint": [
-        "black>=24.8.0,<25",  # Auto-formatter and linter
-        "mypy>=1.11.1,<2",  # Static type analyzer
+        "black>=24.10.0,<25",  # Auto-formatter and linter
+        "mypy>=1.13.0,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
         "flake8>=7.1.1,<8",  # Style linter
         "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
         "flake8-print>=5.0.0,<6",  # Detect print statements left in code
+        "flake8-pydantic",  # For detecting issues with Pydantic models
+        "flake8-type-checking",  # Detect imports to move in/out of type-checking blocks
         "isort>=5.10.1,<6",  # Import sorting linter
-        "mdformat>=0.7.17",  # Auto-formatter for markdown
+        "mdformat>=0.7.19",  # Auto-formatter for markdown
         "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
         "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
-        "mdformat-pyproject>=0.0.1",  # Allows configuring in pyproject.toml
+        "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
     ],
     "doc": [
         "myst-parser>=1.0.0,<2",  # Parse markdown docs
@@ -35,7 +37,7 @@ extras_require = {
         "packaging>=23.1,<24",  # Used for docs-version directory sorting
     ],
     "release": [  # `release` GitHub Action job uses this
-        "setuptools",  # Installation tool
+        "setuptools>=75.6.0",  # Installation tool
         "wheel",  # Packaging tool
         "twine==3.8.0",  # Package upload tool
         "packaging>=23.1,<24",  # Needed for twine
@@ -102,5 +104,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
     ],
 )
