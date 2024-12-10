@@ -69,23 +69,7 @@
 <p class="caption" role="heading"><span class="caption-text">Python Reference</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="address.html">eth_pydantic_types.address</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">eth_pydantic_types.hash</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes"><code class="docutils literal notranslate"><span class="pre">HashBytes</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes16"><code class="docutils literal notranslate"><span class="pre">HashBytes16</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes20"><code class="docutils literal notranslate"><span class="pre">HashBytes20</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes32"><code class="docutils literal notranslate"><span class="pre">HashBytes32</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes4"><code class="docutils literal notranslate"><span class="pre">HashBytes4</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes64"><code class="docutils literal notranslate"><span class="pre">HashBytes64</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashBytes8"><code class="docutils literal notranslate"><span class="pre">HashBytes8</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr"><code class="docutils literal notranslate"><span class="pre">HashStr</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr16"><code class="docutils literal notranslate"><span class="pre">HashStr16</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr20"><code class="docutils literal notranslate"><span class="pre">HashStr20</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr32"><code class="docutils literal notranslate"><span class="pre">HashStr32</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr4"><code class="docutils literal notranslate"><span class="pre">HashStr4</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr64"><code class="docutils literal notranslate"><span class="pre">HashStr64</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eth_pydantic_types.hash.HashStr8"><code class="docutils literal notranslate"><span class="pre">HashStr8</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">eth_pydantic_types.hash</a></li>
 </ul>
 
         </div>
@@ -114,97 +98,6 @@
              
   <section id="module-eth_pydantic_types.hash">
 <span id="eth-pydantic-types-hash"></span><h1>eth_pydantic_types.hash<a class="headerlink" href="#module-eth_pydantic_types.hash" title="Permalink to this heading"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HexBytes</span></code></p>
-<p>Represents a single-slot static hash as bytes.
-This type is meant to be overridden by the larger hash types with a new size.
-The class variable “size” is overridden in subclasses for each byte-size,
-e.g. HashBytes20, HashBytes32.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes16">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes16</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes16" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes20">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes20</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes20" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes32">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes32</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes32" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes4">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes4" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes64">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes64</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes64" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashBytes8">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashBytes8</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hash.HashBytes8" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashBytes" title="eth_pydantic_types.hash.HashBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashBytes</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHexStr</span></code></p>
-<p>Represents a single-slot static hash as a str.
-This type is meant to be overridden by the larger hash types with a new size.
-e.g. HashStr20, HashStr32.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr16">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr16</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr16" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr20">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr20</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr20" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr32">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr32</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr32" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr4">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr4</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr4" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr64">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr64</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr64" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="eth_pydantic_types.hash.HashStr8">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hash.</span></span><span class="sig-name descname"><span class="pre">HashStr8</span></span><a class="headerlink" href="#eth_pydantic_types.hash.HashStr8" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hash.HashStr" title="eth_pydantic_types.hash.HashStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">HashStr</span></code></a></p>
-</dd></dl>
-
 </section>
 
 
