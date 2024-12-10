@@ -1,13 +1,11 @@
 from functools import cached_property
-from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Optional
+from typing import Annotated, Any, ClassVar, Optional
 
 from cchecksum import to_checksum_address
+from eth_typing import ChecksumAddress
 from pydantic_core.core_schema import ValidationInfo, str_schema
 
 from eth_pydantic_types.hash import HashStr20
-
-if TYPE_CHECKING:
-    from eth_typing import ChecksumAddress
 
 ADDRESS_PATTERN = "^0x[a-fA-F0-9]{40}$"
 
@@ -36,7 +34,7 @@ class Address(HashStr20):
         return cls.to_checksum_address(value)
 
     @classmethod
-    def to_checksum_address(cls, value: str) -> "ChecksumAddress":
+    def to_checksum_address(cls, value: str) -> ChecksumAddress:
         return to_checksum_address(value)
 
 
@@ -44,7 +42,7 @@ class _AddressTypeFactory:
     @cached_property
     def address_type(self):
         # Lazy define for performance reasons.
-        AddressType = Annotated["ChecksumAddress", Address]
+        AddressType = Annotated[ChecksumAddress, Address]
         AddressType.__doc__ = """
         A type that can be used in place of ``eth_typing.ChecksumAddress``.
 
