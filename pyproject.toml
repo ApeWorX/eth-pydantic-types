@@ -25,7 +25,10 @@ target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
 include = '\.pyi?$'
 
 [tool.pytest.ini_options]
-addopts = "-p no:ape_test"  # NOTE: Prevents the ape plugin from activating on our tests
+addopts = """
+    -p no:ape_test
+    -p no:pytest_ethereum
+"""
 python_files = "test_*.py"
 testpaths = "tests"
 markers = "fuzzing: Run Hypothesis fuzz test suite"
