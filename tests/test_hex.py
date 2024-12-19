@@ -3,8 +3,7 @@ from eth_utils import to_hex
 from hexbytes import HexBytes as BaseHexBytes
 from pydantic import BaseModel, ValidationError
 
-from eth_pydantic_types import HashStr20
-from eth_pydantic_types.hex import HexBytes, HexStr
+from eth_pydantic_types.hex import HexBytes, HexStr, HexStr20
 
 
 class BytesModel(BaseModel):
@@ -123,7 +122,7 @@ def test_hex_removes_leading_zeroes_if_needed():
     address = "0x000000000000000000000000cafac3dd18ac6c6e92c921884f9e4176737c052c"
 
     class MyModel(BaseModel):
-        my_address: HashStr20
+        my_address: HexStr20
 
     # Test both str and bytes for input.
     for addr in (address, HexBytes(address)):

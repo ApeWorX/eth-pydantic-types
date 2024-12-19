@@ -4,19 +4,19 @@ The types in this package are pydantic types for Ethereum inspired from [eth-typ
 
 ## Hash
 
-`HashBytes{n}` and `HashStr{n}` are good types to use when your hex values are sized.
+`Bytes{n}` and `String{n}` are good types to use when your hex values are sized.
 Both types serialize to `string` in the JSON schema.
-Use `HashBytes` types when you want types to serialize to bytes in the Pydantic core schema and `HashStr` types when you want to serialize to `str` in the core Pydantic schema.
+Use `Bytes` types when you want types to serialize to bytes in the Pydantic core schema and `String` types when you want to serialize to `str` in the core Pydantic schema.
 
 ```python
 from pydantic import BaseModel
 
-from eth_pydantic_types import HashBytes32, HashStr20
+from eth_pydantic_types import Bytes32, String20
 
 # When serializing to JSON, both types are hex strings.
 class Transaction(BaseModel):
-    tx_hash: HashBytes32  # Will be bytes
-    address: HashStr20  # Will be str
+    tx_hash: Bytes32  # Will be bytes
+    address: String20  # Will be str
 
 
 # NOTE: I am able to pass an int-hash as the value and it will
