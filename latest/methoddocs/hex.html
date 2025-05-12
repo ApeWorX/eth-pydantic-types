@@ -1,130 +1,298 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html lang="en" data-accent-color="lime" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>eth_pydantic_types.hexbytes &mdash; eth-pydantic-types  documentation</title>
-      <link rel="stylesheet" href="/eth-pydantic-types/latest/_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="/eth-pydantic-types/latest/_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="/eth-pydantic-types/latest/_static/custom.css" type="text/css" />
-    <link rel="shortcut icon" href="../_static/favicon.ico"/>
-    <link rel="canonical" href="/ape/methoddocs/hex.html" />
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/js/theme.js"></script>
-    <script src="../_static/custom.js"></script>
-  <script>
-      var PROJECT = "eth-pydantic-types";
-  </script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
-</head>
-
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="../index.html" class="icon icon-home">
-            eth-pydantic-types
-              <img src="../_static/logo.gif" class="logo" alt="Logo"/>
-          </a>
-
-          <div class="version">
-            <label for="version-picker" id="version-picker-label">Version:</label>
-            <select id="version-picker">
-              <option value="">Select version...</option>
-              <option value="latest">latest</option>
-              <option value="stable">stable</option>
-                <option value="v0.1.3">v0.1.3</option>
-                <option value="v0.1.2">v0.1.2</option>
-                <option value="v0.1.1">v0.1.1</option>
-                <option value="v0.1.0">v0.1.0</option>
-            </select>
-          </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>eth_pydantic_types.hex - eth-pydantic-types documentation</title><link rel="shortcut icon" href="../_static/favicon.ico"/><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="eth_pydantic_types.address" href="address.html" />
+      <link rel="canonical" href="eth-pydantic-types/methoddocs/hex.html" /><script>
+    function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
+    setColorMode(localStorage._theme||"auto");
+  </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=397bb51e" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=c516b45e" />
+    <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sy-f-text: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+  --sy-f-heading: "Inter", var(--sy-f-sys), var(--sy-f-cjk), sans-serif;
+}
+</style>
+    <meta property="og:type" content="website"/>
+<meta property="og:url" content="eth-pydantic-types/methoddocs/hex.html"/>
+<meta property="og:title" content="eth_pydantic_types.hex"/>
+<meta name="twitter:card" content="summary"/>
+  </head>
+<body><div class="sy-head">
+  <div class="sy-head-blur"></div>
+  <div class="sy-head-inner sy-container mx-auto">
+    <a class="sy-head-brand" href="../index.html">
+      <img class="light-logo" src="../_static/logo_grey.svg" alt="eth-pydantic-types" height="28" loading="lazy" />
+      <img class="dark-logo" src="../_static/logo_green.svg" alt="eth-pydantic-types" height="28" loading="lazy" />
+      <strong>eth-pydantic-types</strong>
+    </a>
+    <div class="sy-head-nav" id="HeadNav">
+      <nav class="sy-head-links"></nav>
+      <div class="sy-head-extra flex items-center print:hidden"><form class="searchbox flex items-center" action="../search.html" method="get">
+  <input type="text" name="q" placeholder="Search" />
+  <kbd>/</kbd>
+</form><div class="sy-head-socials"></div></div>
+    </div>
+    <div class="sy-head-actions flex items-center shrink-0 print:hidden"><button class="js-theme theme-switch flex items-center"
+data-aria-auto="Switch to light color mode"
+data-aria-light="Switch to dark color mode"
+data-aria-dark="Switch to auto color mode">
+<i class="i-lucide theme-icon"></i>
+</button><button class="md:hidden flex items-center js-menu" aria-label="Menu" type="button" aria-controls="HeadNav" aria-expanded="false">
+        <div class="hamburger">
+          <span class="hamburger_1"></span>
+          <span class="hamburger_2 -translate-x-2"></span>
+          <span class="hamburger_3 -translate-x-1"></span>
+        </div>
+      </button>
+    </div>
+  </div>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">User Guides</span></p>
+<div class="sy-page sy-container flex mx-auto">
+  <aside id="lside" class="sy-lside md:w-72 md:shrink-0 print:hidden">
+    <div class="sy-lside-inner md:sticky">
+      <div class="sy-scrollbar p-6">
+        <div class="globaltoc" data-expand-depth="0"><p class="caption" role="heading" aria-level="3"><span class="caption-text">User Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../userguides/quickstart.html">eth-pydantic-types</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Python Reference</span></p>
-<ul>
+<p class="caption" role="heading" aria-level="3"><span class="caption-text">Python Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="abi.html">eth_pydantic_types.abi</a></li>
 <li class="toctree-l1"><a class="reference internal" href="address.html">eth_pydantic_types.address</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hash.html">eth_pydantic_types.hash</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">eth_pydantic_types.hex</a></li>
 </ul>
 
         </div>
       </div>
-    </nav>
+    </div>
+  </aside>
+  <div class="lside-overlay js-menu" role="button" aria-label="Close left sidebar" aria-controls="lside" aria-expanded="false"></div>
+  <aside id="rside" class="sy-rside pb-3 w-64 shrink-0 order-last">
+    <button class="rside-close js-menu xl:hidden" aria-label="Close Table of Contents" type="button" aria-controls="rside" aria-expanded="false">
+      <i class="i-lucide close"></i>
+    </button>
+    <div class="sy-scrollbar sy-rside-inner px-6 xl:top-16 xl:sticky xl:pl-0 pt-6 pb-4"><div class="localtoc"><h3>On this page</h3><ul>
+<li><a class="reference internal" href="#module-eth_pydantic_types.hex.str">HexStr</a><ul>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.str.BaseHexStr"><code class="docutils literal notranslate"><span class="pre">BaseHexStr</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.str.BoundHexStr"><code class="docutils literal notranslate"><span class="pre">BoundHexStr</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.str.HexStr"><code class="docutils literal notranslate"><span class="pre">HexStr</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.str.HexStr20"><code class="docutils literal notranslate"><span class="pre">HexStr20</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.str.HexStr32"><code class="docutils literal notranslate"><span class="pre">HexStr32</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-eth_pydantic_types.hex.bytes">HexBytes</a><ul>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.bytes.BoundHexBytes"><code class="docutils literal notranslate"><span class="pre">BoundHexBytes</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes"><code class="docutils literal notranslate"><span class="pre">HexBytes</span></code></a><ul>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes.fromhex"><code class="docutils literal notranslate">fromhex()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes20"><code class="docutils literal notranslate"><span class="pre">HexBytes20</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes32"><code class="docutils literal notranslate"><span class="pre">HexBytes32</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-eth_pydantic_types.hex.int">HexInt</a><ul>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.int.BaseHexInt"><code class="docutils literal notranslate"><span class="pre">BaseHexInt</span></code></a><ul>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.int.BaseHexInt.from_bytes"><code class="docutils literal notranslate">from_bytes()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.int.BoundHexInt"><code class="docutils literal notranslate"><span class="pre">BoundHexInt</span></code></a></li>
+<li><a class="reference internal" href="#eth_pydantic_types.hex.int.HexInt"><code class="docutils literal notranslate"><span class="pre">HexInt</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
+  </aside>
+  <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6"><div class="sy-breadcrumbs" role="navigation">
+  <div class="sy-breadcrumbs-inner flex items-center">
+    <div class="md:hidden mr-3">
+      <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
+        <i class="i-lucide menu"></i>
+      </button>
+    </div>
+    <ol class="flex-1" itemscope itemtype="https://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="../index.html"><span itemprop="name">eth-pydantic-types</span></a>
+        <span>/</span>
+        <meta itemprop="position" content="1" />
+      </li><li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <strong itemprop="name">eth_pydantic_types.hex</strong>
+        <meta itemprop="position" content="2" />
+      </li></ol>
+    <div class="xl:hidden ml-1">
+      <button class="js-menu" aria-label="Show table of contents" type="button" aria-controls="rside"
+        aria-expanded="false">
+        <i class="i-lucide outdent"></i>
+      </button>
+    </div>
+  </div>
+</div><div class="flex flex-col break-words justify-between">
+      <div class="min-w-0 max-w-6xl px-6 pb-6 pt-8 xl:px-12">
+        <article class="yue" role="main">
+          <section id="eth-pydantic-types-hex">
+<h1>eth_pydantic_types.hex<a class="headerlink" href="#eth-pydantic-types-hex" title="Link to this heading"></a></h1>
+<section id="module-eth_pydantic_types.hex.str">
+<span id="hexstr"></span><h2>HexStr<a class="headerlink" href="#module-eth_pydantic_types.hex.str" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.str.BaseHexStr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.str.</span></span><span class="sig-name descname"><span class="pre">BaseHexStr</span></span><a class="headerlink" href="#eth_pydantic_types.hex.str.BaseHexStr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHex</span></code></p>
+</dd></dl>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">eth-pydantic-types</a>
-      </nav>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.str.BoundHexStr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.str.</span></span><span class="sig-name descname"><span class="pre">BoundHexStr</span></span><a class="headerlink" href="#eth_pydantic_types.hex.str.BoundHexStr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.str.BaseHexStr" title="eth_pydantic_types.hex.str.BaseHexStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHexStr</span></code></a></p>
+<p>A hex string value, that is required to be a specific size.</p>
+</dd></dl>
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">eth_pydantic_types.hexbytes</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/methoddocs/hex.md.txt" rel="nofollow"> View page source</a>
-      </li>
-  </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="eth-pydantic-types-hexbytes">
-<h1>eth_pydantic_types.hexbytes<a class="headerlink" href="#eth-pydantic-types-hexbytes" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.str.HexStr">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.str.</span></span><span class="sig-name descname"><span class="pre">HexStr</span></span><a class="headerlink" href="#eth_pydantic_types.hex.str.HexStr" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.str.BaseHexStr" title="eth_pydantic_types.hex.str.BaseHexStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHexStr</span></code></a></p>
+<p>A hex string value.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.str.HexStr20">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.str.</span></span><span class="sig-name descname"><span class="pre">HexStr20</span></span><a class="headerlink" href="#eth_pydantic_types.hex.str.HexStr20" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.str.BoundHexStr" title="eth_pydantic_types.hex.str.BoundHexStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundHexStr</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.str.HexStr32">
+<span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.str.</span></span><span class="sig-name descname"><span class="pre">HexStr32</span></span><a class="headerlink" href="#eth_pydantic_types.hex.str.HexStr32" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#eth_pydantic_types.hex.str.BoundHexStr" title="eth_pydantic_types.hex.str.BoundHexStr"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundHexStr</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-eth_pydantic_types.hex.bytes">
+<span id="hexbytes"></span><h2>HexBytes<a class="headerlink" href="#module-eth_pydantic_types.hex.bytes" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.bytes.BoundHexBytes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.bytes.</span></span><span class="sig-name descname"><span class="pre">BoundHexBytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hex.bytes.BoundHexBytes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes" title="eth_pydantic_types.hex.bytes.HexBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">HexBytes</span></code></a></p>
+<p>Use when receiving <code class="docutils literal notranslate"><span class="pre">hexbytes.HexBytes</span></code> values and a specific size is required.
+Includes a pydantic validator and serializer.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.bytes.HexBytes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.bytes.</span></span><span class="sig-name descname"><span class="pre">HexBytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hex.bytes.HexBytes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">HexBytes</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHex</span></code></p>
+<p>Use when receiving <code class="docutils literal notranslate"><span class="pre">hexbytes.HexBytes</span></code> values. Includes
+a pydantic validator and serializer.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.bytes.HexBytes.fromhex">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromhex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hex_str</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#eth_pydantic_types.hex.bytes.HexBytes" title="eth_pydantic_types.hex.bytes.HexBytes"><span class="pre">HexBytes</span></a></span></span><a class="headerlink" href="#eth_pydantic_types.hex.bytes.HexBytes.fromhex" title="Link to this definition"></a></dt>
+<dd><p>Create a bytes object from a string of hexadecimal numbers.</p>
+<p>Spaces between two numbers are accepted.
+Example: bytes.fromhex(‘B9 01EF’) -&gt; b’\xb9\x01\xef’.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.bytes.HexBytes20">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.bytes.</span></span><span class="sig-name descname"><span class="pre">HexBytes20</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytearray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">memoryview</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#eth_pydantic_types.hex.bytes.HexBytes20" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.bytes.BoundHexBytes" title="eth_pydantic_types.hex.bytes.BoundHexBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundHexBytes</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.bytes.HexBytes32">
+<span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.bytes.</span></span><span class="sig-name descname"><span class="pre">HexBytes32</span></span><a class="headerlink" href="#eth_pydantic_types.hex.bytes.HexBytes32" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#eth_pydantic_types.hex.bytes.BoundHexBytes" title="eth_pydantic_types.hex.bytes.BoundHexBytes"><code class="xref py py-class docutils literal notranslate"><span class="pre">BoundHexBytes</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-eth_pydantic_types.hex.int">
+<span id="hexint"></span><h2>HexInt<a class="headerlink" href="#module-eth_pydantic_types.hex.int" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.int.BaseHexInt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.int.</span></span><span class="sig-name descname"><span class="pre">BaseHexInt</span></span><a class="headerlink" href="#eth_pydantic_types.hex.int.BaseHexInt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHex</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.int.BaseHexInt.from_bytes">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">byteorder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'big'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#eth_pydantic_types.hex.int.BaseHexInt" title="eth_pydantic_types.hex.int.BaseHexInt"><span class="pre">BaseHexInt</span></a></span></span><a class="headerlink" href="#eth_pydantic_types.hex.int.BaseHexInt.from_bytes" title="Link to this definition"></a></dt>
+<dd><p>Return the integer represented by the given array of bytes.</p>
+<dl class="simple">
+<dt>bytes</dt><dd><p>Holds the array of bytes to convert.  The argument must either
+support the buffer protocol or be an iterable object producing bytes.
+Bytes and bytearray are examples of built-in objects that support the
+buffer protocol.</p>
+</dd>
+<dt>byteorder</dt><dd><p>The byte order used to represent the integer.  If byteorder is ‘big’,
+the most significant byte is at the beginning of the byte array.  If
+byteorder is ‘little’, the most significant byte is at the end of the
+byte array.  To request the native byte order of the host system, use
+<a href="#id1"><span class="problematic" id="id2">`</span></a>sys.byteorder’ as the byte order value.</p>
+</dd>
+<dt>signed</dt><dd><p>Indicates whether two’s complement is used to represent the integer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.int.BoundHexInt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.int.</span></span><span class="sig-name descname"><span class="pre">BoundHexInt</span></span><a class="headerlink" href="#eth_pydantic_types.hex.int.BoundHexInt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.int.BaseHexInt" title="eth_pydantic_types.hex.int.BaseHexInt"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHexInt</span></code></a></p>
+<p>A hex string value, that is required to be a specific size.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="eth_pydantic_types.hex.int.HexInt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">eth_pydantic_types.hex.int.</span></span><span class="sig-name descname"><span class="pre">HexInt</span></span><a class="headerlink" href="#eth_pydantic_types.hex.int.HexInt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#eth_pydantic_types.hex.int.BaseHexInt" title="eth_pydantic_types.hex.int.BaseHexInt"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseHexInt</span></code></a></p>
+<p>A hex int value.</p>
+</dd></dl>
+
+</section>
 </section>
 
-
-           </div>
-          </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2023, ApeWorX LTD.</p>
+        </article><button class="back-to-top" type="button">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+  </svg>
+  <span>Back to top</span>
+</button><div class="navigation flex print:hidden"><div class="navigation-prev">
+    <a href="address.html">
+      <i class="i-lucide chevron-left"></i>
+      <div class="page-info">
+        <span>Previous</span><div class="title">eth_pydantic_types.address</div></div>
+    </a>
+  </div></div></div>
+    </div>
+  </main>
+</div>
+<footer class="sy-foot">
+  <div class="sy-foot-inner sy-container mx-auto">
+    <div class="sy-foot-reserved md:flex justify-between items-center">
+      <div class="sy-foot-copyright"><p>2024, ApeWorX LTD</p>
+  
+  <p>
+    Made with
+    
+    <a href="https://www.sphinx-doc.org/">Sphinx</a> and
+    
+    <a href="https://shibuya.lepture.com">Shibuya theme</a>.
+  </p>
+</div>
+      <div class="sy-foot-socials"></div>
+    </div>
   </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
 </footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script data-domain="docs.apeworx.io" defer="defer" src="https://plausible.io/js/script.js"></script>
+      <script src="../_static/shibuya.js?v=e2230717"></script></body>
 </html>
