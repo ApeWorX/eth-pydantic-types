@@ -1,11 +1,18 @@
 from functools import cached_property
-from typing import Annotated, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Optional
 
 from cchecksum import to_checksum_address
 from eth_typing import ChecksumAddress
-from pydantic_core.core_schema import ValidationInfo, str_schema
+from pydantic_core.core_schema import (
+    ValidationInfo,
+    str_schema,
+    with_info_before_validator_function,
+)
 
-from eth_pydantic_types.hash import HashStr20
+from eth_pydantic_types.hex import HexStr20
+
+if TYPE_CHECKING:
+    from pydantic_core import CoreSchema
 
 ADDRESS_PATTERN = "^0x[a-fA-F0-9]{40}$"
 
@@ -14,7 +21,7 @@ def address_schema():
     return str_schema(min_length=42, max_length=42, pattern=ADDRESS_PATTERN)
 
 
-class Address(HashStr20):
+class Address(HexStr20):
     """
     Use for address-types. Validates as a checksummed address. Left-pads zeroes
     if necessary.
@@ -29,9 +36,21 @@ class Address(HashStr20):
     )
 
     @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
+        return with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            address_schema(),
+        )
+
+    @classmethod
     def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         value = super().__eth_pydantic_validate__(value)
         return cls.to_checksum_address(value)
+
+    @classmethod
+    def update_schema(cls):
+        # Already set statically in the class
+        return
 
     @classmethod
     def to_checksum_address(cls, value: str) -> ChecksumAddress:
@@ -65,6 +84,6 @@ def __getattr__(name: str):
 
 
 __all__ = [
-    "AddressType",
+    "Address",
     "Address",
 ]

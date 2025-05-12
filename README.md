@@ -2,47 +2,64 @@
 
 The types in this package are pydantic types for Ethereum inspired from [eth-typing](https://github.com/ethereum/eth-typing/blob/master/eth_typing/evm.py).
 
-## Hash
+## HexStr
 
-`HashBytes{n}` and `HashStr{n}` are good types to use when your hex values are sized.
-Both types serialize to `string` in the JSON schema.
-Use `HashBytes` types when you want types to serialize to bytes in the Pydantic core schema and `HashStr` types when you want to serialize to `str` in the core Pydantic schema.
+When your model involves a string serializes to a hex-str, `HexStr` is the type to use.
+Examples of `HexStr` might be a hash.
+
+Use `HexStr` in your models:
 
 ```python
 from pydantic import BaseModel
+from eth_pydantic_types import HexStr, HexStr32
 
-from eth_pydantic_types import HashBytes32, HashStr20
+class TransactionData(BaseModel):
+    hash_any_size: HexStr
+    sized_hash: HexStr32
 
-# When serializing to JSON, both types are hex strings.
-class Transaction(BaseModel):
-    tx_hash: HashBytes32  # Will be bytes
-    address: HashStr20  # Will be str
-
-
-# NOTE: I am able to pass an int-hash as the value and it will
-#  get validated and type-coerced.
-tx = Transaction(
-    tx_hash=0x1031f0c9ac54dcb64b4f121a27957c14263c5cb49ed316d568e41e19c34d7b28,
-    address=0x1031f0c9ac54dcb64b4f121a27957c14263c5cb4,
-)
+data = TransactionData(hash_any_size="0x123", sized_hash="0x000123")
+assert isinstance(data.nonce, str)
+assert isinstance(data.gas, str)
 ```
 
 ## HexBytes
 
-A thin-wrapper around an already thin-wrapper `hexbytes.HexBytes`.
-The difference here is that this HexBytes properly serializes.
-Use HexBytes any place where you would actually use `hexbytes.HexBytes`.
-`HexBytes` serializes to bytes in the Pydantic core schema and `string` in the JSON schema with a binary format.
+When your model involves bytes that serialize to a hex-str, `HexBytes` is the type to use.
+Examples of `HexBytes` might be a hash.
+
+Use `HexBytes` in your models:
 
 ```python
 from pydantic import BaseModel
-from eth_pydantic_types import HexBytes
+from eth_pydantic_types import HexBytes, HexBytes32
 
-class MyStorage(BaseModel):
-    cid: HexBytes
+class TransactionData(BaseModel):
+    hash_any_size: HexBytes
+    sized_hash: HexBytes32
 
-# NOTE: We are able to pass a hex-str for a HexBytes value.
-storage = MyStorage(cid="0x123")
+data = TransactionData(hash_any_size="0x123", sized_hash="0x000123")
+assert isinstance(data.nonce, str)
+assert isinstance(data.gas, str)
+```
+
+## HexInt
+
+When your model involves an integer that serializes to a hex-str, `HexInt` is the type to use.
+Examples of `HexInt` are transaction-type, nonce, and gas values.
+
+Use `HexInt` in your models:
+
+```python
+from pydantic import BaseModel
+from eth_pydantic_types import HexInt
+
+class TransactionData(BaseModel):
+    nonce: HexInt
+    gas: HexInt
+
+data = TransactionData(nonce="0x123", gas="0x000123")
+assert isinstance(data.nonce, int)
+assert isinstance(data.gas, int)
 ```
 
 ## Address
