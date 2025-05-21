@@ -185,9 +185,15 @@ class TestSized:
         assert len(model.valuebytes20) == 20
         assert len(model.valuebytes32) == 32
         assert len(model.valuestr32) == 66
-        assert model.valuebytes20.hex().endswith("32")
-        assert model.valuebytes32.hex().endswith("32")
-        assert model.valuestr32.endswith("32")
+
+        if isinstance(value, int):
+            assert model.valuebytes20.hex().endswith("32")
+            assert model.valuebytes32.hex().endswith("32")
+            assert model.valuestr32.endswith("32")
+        else:
+            assert model.valuebytes20.hex().startswith("32")
+            assert model.valuebytes32.hex().startswith("32")
+            assert model.valuestr32.startswith("0x32")
 
     @pytest.mark.parametrize("value", ("foo", -35, "0x" + ("F" * 100)))
     def test_invalid_hash(self, value):
@@ -239,6 +245,26 @@ class TestSized:
             "valuestr32": "0x0000000000000000000000000000000000000000000000000000000000000005",
         }
         assert actual == expected
+
+    def test_right_versus_left_pad(self):
+        class SimpleModel(BaseModel):
+            valuebytes: HexBytes32
+            valuestr: HexStr32
+
+        leftpad = SimpleModel(valuebytes=5, valuestr=5)
+        rightpad = SimpleModel(valuebytes="0x05", valuestr="0x05")
+        assert leftpad.valuebytes == HexBytes(
+            "0x0000000000000000000000000000000000000000000000000000000000000005"
+        )
+        assert leftpad.valuestr == (
+            "0x0000000000000000000000000000000000000000000000000000000000000005"
+        )
+        assert rightpad.valuebytes == HexBytes(
+            "0x0500000000000000000000000000000000000000000000000000000000000000"
+        )
+        assert rightpad.valuestr == (
+            "0x0500000000000000000000000000000000000000000000000000000000000000"
+        )
 
 
 class TestBoundHexBytes:

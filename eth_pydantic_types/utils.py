@@ -1,10 +1,16 @@
 from collections.abc import Sized
+from enum import Enum
 from typing import TYPE_CHECKING, Callable, Optional, TypeVar
 
 from eth_pydantic_types._error import HexValueError, SizeError
 
 if TYPE_CHECKING:
     __SIZED_T = TypeVar("__SIZED_T", bound=Sized)
+
+
+class PadDirection(str, Enum):
+    LEFT = "left"
+    RIGHT = "right"
 
 
 def validate_size(value: "__SIZED_T", size: int, coerce: Optional[Callable] = None) -> "__SIZED_T":
@@ -29,41 +35,63 @@ def validate_in_range(value: int, size: int, signed: bool = True) -> int:
     raise SizeError(size, value)
 
 
-def validate_bytes_size(value: bytes, size: int) -> bytes:
-    return validate_size(value, size, coerce=lambda v: _coerce_hexbytes_size(v, size))
+def validate_bytes_size(
+    value: bytes, size: int, pad_direction: PadDirection = PadDirection.LEFT
+) -> bytes:
+    return validate_size(
+        value, size, coerce=lambda v: _coerce_hexbytes_size(v, size, pad_direction=pad_direction)
+    )
 
 
 def validate_address_size(value: str) -> str:
     return validate_str_size(value, 40)
 
 
-def validate_str_size(value: str, size: int) -> str:
-    return validate_size(value, size, coerce=lambda v: _coerce_hexstr_size(v, size))
+def validate_str_size(
+    value: str, size: int, pad_direction: PadDirection = PadDirection.LEFT
+) -> str:
+    return validate_size(
+        value, size, coerce=lambda v: _coerce_hexstr_size(v, size, pad_direction=pad_direction)
+    )
 
 
 def validate_int_size(value: int, size: int, signed: bool) -> int:
     return validate_in_range(value, size, signed)
 
 
-def _coerce_hexstr_size(val: str, length: int) -> str:
+def _coerce_hexstr_size(
+    val: str, length: int, pad_direction: PadDirection = PadDirection.LEFT
+) -> str:
     val = val.replace("0x", "") if val.startswith("0x") else val
     if len(val) == length:
         return val
 
     val_stripped = val.lstrip("0")
+
+    # Ensure is still even.
+    if len(val_stripped) % 2 != 0:
+        val_stripped = f"0{val_stripped}"
+
+    # Put the remaining zeroes on the side we said to pad.
     num_zeroes = max(0, length - len(val_stripped))
     zeroes = "0" * num_zeroes
-    return f"{zeroes}{val_stripped}"
+    return (
+        f"{zeroes}{val_stripped}"
+        if pad_direction is PadDirection.LEFT
+        else f"{val_stripped}{zeroes}"
+    )
 
 
-def _coerce_hexbytes_size(val: bytes, num_bytes: int) -> bytes:
+def _coerce_hexbytes_size(
+    val: bytes, num_bytes: int, pad_direction: PadDirection = PadDirection.LEFT
+) -> bytes:
     if len(val) == num_bytes:
         return val
 
     val_stripped = val.lstrip(b"\x00")
     num_zeroes = max(0, num_bytes - len(val_stripped))
     zeroes = b"\x00" * num_zeroes
-    return zeroes + val_stripped
+    return zeroes + val_stripped if pad_direction is PadDirection.LEFT else val_stripped + zeroes
 
 
 def validate_hex_str(value: str) -> str:
