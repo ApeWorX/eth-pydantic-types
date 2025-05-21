@@ -11,6 +11,7 @@ from pydantic_core.core_schema import (
 from eth_pydantic_types._error import HexValueError
 from eth_pydantic_types.hex.base import BaseHex
 from eth_pydantic_types.utils import (
+    PadDirection,
     get_hash_examples,
     get_hash_pattern,
     validate_hex_str,
@@ -99,13 +100,18 @@ class BoundHexStr(BaseHexStr):
     def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
-        sized_value = cls.validate_size(hex_value)
+
+        # Integers are always padded to the left, but bytes-types are padded to the right
+        # to be ABI-encode compliant.
+        pad_direction = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
+
+        sized_value = cls.validate_size(hex_value, pad_direction=pad_direction)
         return cls(f"0x{sized_value}")
 
     @classmethod
-    def validate_size(cls, value: str) -> str:
+    def validate_size(cls, value: str, pad_direction: PadDirection = PadDirection.LEFT) -> str:
         cls.update_schema()
-        return validate_str_size(value, cls.size * 2)
+        return validate_str_size(value, cls.size * 2, pad_direction=pad_direction)
 
     @classmethod
     def update_schema(cls):

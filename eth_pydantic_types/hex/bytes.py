@@ -9,7 +9,12 @@ from pydantic_core.core_schema import (
 
 from eth_pydantic_types.hex.base import BaseHex
 from eth_pydantic_types.serializers import hex_serializer
-from eth_pydantic_types.utils import get_hash_examples, get_hash_pattern, validate_bytes_size
+from eth_pydantic_types.utils import (
+    PadDirection,
+    get_hash_examples,
+    get_hash_pattern,
+    validate_bytes_size,
+)
 
 if TYPE_CHECKING:
     from pydantic_core import CoreSchema
@@ -37,10 +42,15 @@ class HexBytes(BaseHexBytes, BaseHex):
     def __eth_pydantic_validate__(
         cls, value: Any, info: Optional[ValidationInfo] = None
     ) -> BaseHexBytes:
-        return cls(cls.validate_size(HexBytes(value)))
+
+        # NOTE: We only left-pad integers. All other bytes values are right-padded
+        #   to be compliant with ABI encoding.
+        pad = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
+
+        return cls(cls.validate_size(HexBytes(value), pad_direction=pad))
 
     @classmethod
-    def validate_size(cls, value: bytes) -> bytes:
+    def validate_size(cls, value: bytes, pad_direction: PadDirection = PadDirection.LEFT) -> bytes:
         return value
 
 
@@ -62,11 +72,11 @@ class BoundHexBytes(HexBytes):
         return schema
 
     @classmethod
-    def validate_size(cls, value: bytes) -> bytes:
+    def validate_size(cls, value: bytes, pad_direction: PadDirection = PadDirection.LEFT) -> bytes:
         str_size = cls.size * 2
         cls.schema_pattern = get_hash_pattern(str_size)
         cls.schema_examples = get_hash_examples(str_size)
-        return validate_bytes_size(value, cls.size)
+        return validate_bytes_size(value, cls.size, pad_direction=pad_direction)
 
 
 class HexBytes20(BoundHexBytes):
