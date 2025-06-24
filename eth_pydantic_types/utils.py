@@ -13,7 +13,9 @@ class PadDirection(str, Enum):
     RIGHT = "right"
 
 
-def validate_size(value: "__SIZED_T", size: int, coerce: Optional[Callable] = None) -> "__SIZED_T":
+def validate_size(
+    value: "__SIZED_T", size: int, coerce: Optional[Callable] = None
+) -> "__SIZED_T":
     if len(value) == size:
         return value
 
@@ -39,7 +41,9 @@ def validate_bytes_size(
     value: bytes, size: int, pad_direction: PadDirection = PadDirection.LEFT
 ) -> bytes:
     return validate_size(
-        value, size, coerce=lambda v: _coerce_hexbytes_size(v, size, pad_direction=pad_direction)
+        value,
+        size,
+        coerce=lambda v: _coerce_hexbytes_size(v, size, pad_direction=pad_direction),
     )
 
 
@@ -51,7 +55,9 @@ def validate_str_size(
     value: str, size: int, pad_direction: PadDirection = PadDirection.LEFT
 ) -> str:
     return validate_size(
-        value, size, coerce=lambda v: _coerce_hexstr_size(v, size, pad_direction=pad_direction)
+        value,
+        size,
+        coerce=lambda v: _coerce_hexstr_size(v, size, pad_direction=pad_direction),
     )
 
 
@@ -91,7 +97,11 @@ def _coerce_hexbytes_size(
     val_stripped = val.lstrip(b"\x00")
     num_zeroes = max(0, num_bytes - len(val_stripped))
     zeroes = b"\x00" * num_zeroes
-    return zeroes + val_stripped if pad_direction is PadDirection.LEFT else val_stripped + zeroes
+    return (
+        zeroes + val_stripped
+        if pad_direction is PadDirection.LEFT
+        else val_stripped + zeroes
+    )
 
 
 def validate_hex_str(value: str) -> str:

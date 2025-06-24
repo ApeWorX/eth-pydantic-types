@@ -114,3 +114,23 @@ message = Message(
     )
 )
 ```
+
+## Padding
+
+For types like `HexStr` or `HexBytes`, you can control the padding by using `@field_validator()`.
+
+```python
+from pydantic import BaseModel, field_validator
+from eth_pydantic_types import HexStr20, HexBytes20
+from eth_pydantic_types.utils import Pad
+
+class MyModel(BaseModel):
+    my_str: HexStr20
+    my_bytes: HexBytes20
+
+    @field_validator("my_str", "my_bytes", mode="before")
+    @classmethod
+    def validate_value(cls, value, info):
+        field_type = cls.model_fields[info.field_name].annotation
+        return field_type.__eth_pydantic_validate__(value, pad=Pad.RIGHT)
+```

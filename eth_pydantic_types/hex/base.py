@@ -1,5 +1,6 @@
 from typing import ClassVar
 
+
 schema_pattern = "^0x([0-9a-f][0-9a-f])*$"
 schema_examples = (
     "0x",  # empty bytes
@@ -21,6 +22,8 @@ class BaseHex:
     def __get_pydantic_json_schema__(cls, core_schema, handler):
         json_schema = handler(core_schema)
         json_schema.update(
-            format="binary", pattern=cls.schema_pattern, examples=list(cls.schema_examples)
+            format="binary",
+            pattern=cls.schema_pattern,
+            examples=list(cls.schema_examples),
         )
         return json_schema
