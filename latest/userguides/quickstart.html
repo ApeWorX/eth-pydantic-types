@@ -7,7 +7,7 @@
     function setColorMode(t){let e=document.documentElement;e.setAttribute("data-color-mode",t);let a=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,s=t;"auto"===t&&(s=a?"dark":"light"),"light"===s?(e.classList.remove("dark"),e.classList.add("light")):(e.classList.remove("light"),e.classList.add("dark"))}
     setColorMode(localStorage._theme||"auto");
   </script><link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=397bb51e" />
-    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=c516b45e" />
+    <link rel="stylesheet" type="text/css" href="../_static/shibuya.css?v=d0008d65" />
     <link media="print" rel="stylesheet" type="text/css" href="../_static/print.css?v=20ff2c19" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,11 +84,13 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#address">Address</a></li>
 <li><a class="reference internal" href="#id1">HexStr</a></li>
 <li><a class="reference internal" href="#bip122uri">Bip122Uri</a></li>
+<li><a class="reference internal" href="#padding">Padding</a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
   </aside>
   <div class="rside-overlay js-menu" role="button" aria-label="Close Table of Contents" aria-controls="rside" aria-expanded="false"></div>
-  <main class="sy-main w-full max-sm:max-w-full print:pt-6"><div class="sy-breadcrumbs" role="navigation">
+  <main class="sy-main w-full max-sm:max-w-full print:pt-6">
+<div class="sy-breadcrumbs" role="navigation">
   <div class="sy-breadcrumbs-inner flex items-center">
     <div class="md:hidden mr-3">
       <button class="js-menu" aria-label="Menu" type="button" aria-controls="lside" aria-expanded="false">
@@ -216,6 +218,29 @@ This type serializes to a <code class="docutils literal notranslate"><span class
 </span></pre></div>
 </div>
 </section>
+<section id="padding">
+<h2>Padding<a class="headerlink" href="#padding" title="Link to this heading"></a></h2>
+<p>For types like <code class="docutils literal notranslate"><span class="pre">HexStr</span></code> or <code class="docutils literal notranslate"><span class="pre">HexBytes</span></code>, you can control the padding by using <code class="docutils literal notranslate"><span class="pre">&#64;field_validator()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">field_validator</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">eth_pydantic_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">HexStr20</span><span class="p">,</span> <span class="n">HexBytes20</span>
+</span><span data-line="3"><span class="kn">from</span><span class="w"> </span><span class="nn">eth_pydantic_types.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pad</span>
+</span><span data-line="4">
+</span><span data-line="5"><span class="k">class</span><span class="w"> </span><span class="nc">MyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span data-line="6">    <span class="n">my_str</span><span class="p">:</span> <span class="n">HexStr20</span>
+</span><span data-line="7">    <span class="n">my_bytes</span><span class="p">:</span> <span class="n">HexBytes20</span>
+</span><span data-line="8">
+</span><span data-line="9">    <span class="nd">@field_validator</span><span class="p">(</span><span class="s2">&quot;my_str&quot;</span><span class="p">,</span> <span class="s2">&quot;my_bytes&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;before&quot;</span><span class="p">)</span>
+</span><span data-line="10">    <span class="nd">@classmethod</span>
+</span><span data-line="11">    <span class="k">def</span><span class="w"> </span><span class="nf">validate_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">info</span><span class="p">):</span>
+</span><span data-line="12">        <span class="n">field_type</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="n">info</span><span class="o">.</span><span class="n">field_name</span><span class="p">]</span><span class="o">.</span><span class="n">annotation</span>
+</span><span data-line="13">        <span class="k">return</span> <span class="n">field_type</span><span class="o">.</span><span class="n">__eth_pydantic_validate__</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="n">Pad</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">)</span>
+</span></pre></div>
+</div>
+<p>Else, by default, if you validate integer values, it will pad left.
+Other inputs pad right.
+This mirrors Solidity types, like <code class="docutils literal notranslate"><span class="pre">bytes32</span></code>, that automatically pad-right when given smaller values.
+Integer and address types automatically pad-left.</p>
+</section>
 </section>
 
         </article><button class="back-to-top" type="button">
@@ -264,5 +289,5 @@ This type serializes to a <code class="docutils literal notranslate"><span class
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script data-domain="docs.apeworx.io" defer="defer" src="https://plausible.io/js/script.js"></script>
-      <script src="../_static/shibuya.js?v=e2230717"></script></body>
+      <script src="../_static/shibuya.js?v=1d2088d1"></script></body>
 </html>
