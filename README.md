@@ -134,3 +134,8 @@ class MyModel(BaseModel):
         field_type = cls.model_fields[info.field_name].annotation
         return field_type.__eth_pydantic_validate__(value, pad=Pad.RIGHT)
 ```
+
+Else, by default, if you validate integer values, it will pad left.
+Other inputs pad right.
+This mirrors Solidity types, like `bytes32`, that automatically pad-right when given smaller values.
+Integer and address types automatically pad-left.
