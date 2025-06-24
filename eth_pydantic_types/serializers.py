@@ -1,4 +1,4 @@
-from typing import Union, Optional
+from typing import Optional, Union
 
 from pydantic_core.core_schema import plain_serializer_function_ser_schema
 
@@ -23,9 +23,7 @@ def serialize_hex(
     return f"0x{hex_value}"
 
 
-def create_hex_serializer(
-    size: Optional[int] = None, pad: PadDirection = PadDirection.LEFT
-):
+def create_hex_serializer(size: Optional[int] = None, pad: PadDirection = PadDirection.LEFT):
     return plain_serializer_function_ser_schema(
         function=lambda value: serialize_hex(value, size=size, pad=pad)
     )

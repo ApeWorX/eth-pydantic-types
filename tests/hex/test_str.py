@@ -1,11 +1,12 @@
 import pytest
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
 
 from eth_pydantic_types.hex import (
     HexBytes,
     HexStr,
     HexStr20,
 )
+from eth_pydantic_types.utils import PadDirection
 
 
 class StrModel(BaseModel):
@@ -51,9 +52,7 @@ class TestHexStr:
     def test_model_dump(self, bytes32str):
         model = StrModel(value=bytes32str)
         actual = model.model_dump()
-        expected = {
-            "value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"
-        }
+        expected = {"value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}
         assert actual == expected
 
         model = StrModel(value=3)
@@ -82,3 +81,17 @@ class TestHexStr:
             value = b"\x101\xf0\xc9\xacT\xdc\xb6KO\x12\x1a'\x95|\x14&<\\\xb4"
             model = StrModel(value=value)
             assert model.value == HexBytes(value)
+
+    def test_right_pad(self):
+        class MyModel(BaseModel):
+            my_str: HexStr20
+
+            @field_validator("my_str", mode="before")
+            @classmethod
+            def validate_value(cls, value, info):
+                field_type = cls.model_fields[info.field_name].annotation
+                assert field_type  # For Mypy
+                return field_type.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
+
+        model = MyModel(my_str=1)
+        assert model.my_str.startswith("0x01")

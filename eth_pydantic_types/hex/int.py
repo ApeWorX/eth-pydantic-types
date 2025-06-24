@@ -15,13 +15,13 @@ from pydantic_core.core_schema import (
 
 from eth_pydantic_types._error import HexValueError
 from eth_pydantic_types.hex.base import BaseHex
-from eth_pydantic_types.serializers import hex_serializer, create_hex_serializer
+from eth_pydantic_types.serializers import create_hex_serializer, hex_serializer
 from eth_pydantic_types.utils import (
+    PadDirection,
     get_hash_examples,
     get_hash_pattern,
     validate_hex_str,
     validate_int_size,
-    PadDirection,
 )
 
 if TYPE_CHECKING:
@@ -32,18 +32,14 @@ if TYPE_CHECKING:
 class BaseHexInt(int, BaseHex):
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None):
-        return no_info_before_validator_function(
-            cls.__eth_pydantic_validate__, int_schema()
-        )
+        return no_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value):
+    def __eth_pydantic_validate__(cls, value, **kwargs):
         return value  # Override.
 
     @classmethod
-    def from_bytes(
-        cls, data, byteorder: str = "big", signed: bool = False
-    ) -> "BaseHexInt":
+    def from_bytes(cls, data, byteorder: str = "big", signed: bool = False) -> "BaseHexInt":
         int_value = int.from_bytes(data, byteorder="big", signed=signed)
         return cls(int_value)
 
@@ -69,15 +65,13 @@ class HexInt(BaseHexInt):
 
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
-        schema = with_info_before_validator_function(
-            cls.__eth_pydantic_validate__, int_schema()
-        )
+        schema = with_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
         schema["serialization"] = hex_serializer
         return schema
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
+        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
     ) -> int:
         return cls(cls.validate_hex(value))
 
@@ -103,15 +97,13 @@ class BoundHexInt(BaseHexInt):
         )
 
         # NOTE: Integers should always pad left; else the value increases.
-        schema["serialization"] = create_hex_serializer(
-            size=cls.size, pad=PadDirection.LEFT
-        )
+        schema["serialization"] = create_hex_serializer(size=cls.size, pad=PadDirection.LEFT)
 
         return schema
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
+        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
     ) -> int:
         hex_int = cls.validate_hex(value)
         sized_value = cls.validate_size(hex_int)

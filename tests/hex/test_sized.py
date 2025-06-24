@@ -59,9 +59,7 @@ class TestSized:
         for addr in (address, HexBytes(address)):
             model = MyModel(my_address=addr)
             assert len(model.my_address) == 20
-            assert model.my_address == HexBytes(
-                "0xcafac3dd18ac6c6e92c921884f9e4176737c052c"
-            )
+            assert model.my_address == HexBytes("0xcafac3dd18ac6c6e92c921884f9e4176737c052c")
 
     def test_schema(self):
         actual = SizedModel.model_json_schema()

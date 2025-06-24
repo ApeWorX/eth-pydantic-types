@@ -16,15 +16,9 @@ extras_require = {
         "eth-hash[pycryptodome]",  # For backends to work
     ],
     "lint": [
-        "black>=25.1.0,<26",  # Auto-formatter and linter
-        "mypy>=1.15.0,<2",  # Static type analyzer
+        "ruff>=0.12.0",  # Unified linter and formatter
+        "mypy>=1.16.1,<2",  # Static type analyzer
         "types-setuptools",  # Needed for mypy type shed
-        "flake8>=7.2.0,<8",  # Style linter
-        "flake8-breakpoint>=1.1.0,<2",  # Detect breakpoints left in code
-        "flake8-print>=5.0.0,<6",  # Detect print statements left in code
-        "flake8-pydantic",  # For detecting issues with Pydantic models
-        "flake8-type-checking",  # Detect imports to move in/out of type-checking blocks
-        "isort>=6.0.1,<7",  # Import sorting linter
         "mdformat>=0.7.22",  # Auto-formatter for markdown
         "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
         "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates

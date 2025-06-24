@@ -3,9 +3,11 @@ from typing import ClassVar
 import pytest
 from eth_utils import to_hex
 from hexbytes import HexBytes as BaseHexBytes
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
 
 from eth_pydantic_types.hex import BoundHexBytes, HexBytes, HexBytes32
+from eth_pydantic_types.hex.bytes import HexBytes20
+from eth_pydantic_types.utils import PadDirection
 
 
 class BytesModel(BaseModel):
@@ -52,9 +54,7 @@ class TestHexBytes:
     def test_model_dump(self, bytes32str):
         model = BytesModel(value=bytes32str)
         actual = model.model_dump()
-        expected = {
-            "value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"
-        }
+        expected = {"value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}
         assert actual == expected
 
     def test_from_bytes(self):
@@ -92,3 +92,15 @@ class TestBoundHexBytes:
         )
         account = Account(pub_key=key)
         assert account.pub_key == HexBytes(key)
+
+    def test_right_pad(self):
+        class MyModel(BaseModel):
+            my_bytes: HexBytes20
+
+            @field_validator("my_bytes", mode="before")
+            @classmethod
+            def validate_value(cls, value, info):
+                return HexBytes20.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
+
+        model = MyModel(my_bytes=1)
+        assert model.my_bytes.startswith(HexBytes(1))
