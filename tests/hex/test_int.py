@@ -6,11 +6,22 @@ from pydantic import BaseModel, ValidationError
 from eth_pydantic_types.hex import (
     BoundHexInt,
     HexInt,
+    HexInt32,
+    UInt256,
 )
+from eth_pydantic_types.hex.bytes import HexBytes
 
 
 class IntModel(BaseModel):
     value: HexInt
+
+
+class HexInt32Model(BaseModel):
+    value: HexInt32
+
+
+class UInt256Model(BaseModel):
+    value: UInt256
 
 
 class TestHexInt:
@@ -44,3 +55,32 @@ class TestHexInt:
 
         with pytest.raises(ValidationError):
             _ = Model(pub_key=value)
+
+
+class TestHexInt32:
+    @pytest.mark.parametrize("value", ("0xa", 10, b"\n"))
+    def test_valid(self, value):
+        actual = HexInt32Model(value=value)
+        assert actual.value == 10
+
+        str_value = actual.model_dump()["value"]
+        expected = "0x000000000000000000000000000000000000000000000000000000000000000a"
+        assert str_value == expected
+
+        # The resulting size in bytes is 32.
+        assert len(HexBytes(str_value)) == 32
+
+
+# Even though UInt256 is a TypeAlias of HexInt32, we want to ensure it functions separately.
+class TestUInt256:
+    @pytest.mark.parametrize("value", ("0xa", 10, b"\n"))
+    def test_valid(self, value):
+        actual = UInt256Model(value=value)
+        assert actual.value == 10
+
+        str_value = actual.model_dump()["value"]
+        expected = "0x000000000000000000000000000000000000000000000000000000000000000a"
+        assert str_value == expected
+
+        # The resulting size in bytes is 32.
+        assert len(HexBytes(str_value)) == 32
