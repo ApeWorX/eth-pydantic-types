@@ -44,7 +44,7 @@ class TestHexInt:
         actual = model.model_dump()
         assert actual == {"value": "0x0a"}
 
-    @pytest.mark.parametrize("value", (-1, 2**256))
+    @pytest.mark.parametrize("value", (-1, 2 * 8**256))
     def test_out_of_bounds(self, value):
         class PublicKey(BoundHexInt):
             size: ClassVar[int] = 64
@@ -84,3 +84,20 @@ class TestUInt256:
 
         # The resulting size in bytes is 32.
         assert len(HexBytes(str_value)) == 32
+
+
+def test_custom_type():
+    # An 8-byte unsigned hex integer.
+    class NetworkID(BoundHexInt):
+        size: int = 8
+        signed: bool = False
+
+    class MyModel(BaseModel):
+        network_id: NetworkID
+
+    # Sepolia.
+    model = MyModel(network_id=11155111)
+    assert model.network_id == 11155111
+
+    model_json = model.model_dump_json()
+    assert model_json == '{"network_id":"0x0000000000aa36a7"}'

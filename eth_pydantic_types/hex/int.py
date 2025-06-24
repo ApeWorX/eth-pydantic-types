@@ -52,7 +52,7 @@ class BaseHexInt(int, BaseHex):
             return cls.from_bytes(data)
 
         elif isinstance(data, str):
-            return int(validate_hex_str(data), 16)
+            return cls(int(validate_hex_str(data), 16))
 
         raise HexValueError(data)
 
