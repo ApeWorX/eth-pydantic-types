@@ -24,14 +24,18 @@ if TYPE_CHECKING:
 class BaseHexInt(int, BaseHex):
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None):
-        return no_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
+        return no_info_before_validator_function(
+            cls.__eth_pydantic_validate__, int_schema()
+        )
 
     @classmethod
     def __eth_pydantic_validate__(cls, value):
         return value  # Override.
 
     @classmethod
-    def from_bytes(cls, data, byteorder: str = "big", signed: bool = False) -> "BaseHexInt":
+    def from_bytes(
+        cls, data, byteorder: str = "big", signed: bool = False
+    ) -> "BaseHexInt":
         int_value = int.from_bytes(data, byteorder="big", signed=signed)
         return cls(int_value)
 
@@ -57,12 +61,16 @@ class HexInt(BaseHexInt):
 
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None) -> "CoreSchema":
-        schema = with_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
+        schema = with_info_before_validator_function(
+            cls.__eth_pydantic_validate__, int_schema()
+        )
         schema["serialization"] = hex_serializer
         return schema
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> int:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> int:
         return cls(cls.validate_hex(value))
 
 
@@ -87,7 +95,9 @@ class BoundHexInt(BaseHexInt):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> int:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> int:
         hex_int = cls.validate_hex(value)
         sized_value = cls.validate_size(hex_int)
         return cls(sized_value)

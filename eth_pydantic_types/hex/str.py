@@ -26,7 +26,9 @@ if TYPE_CHECKING:
 class BaseHexStr(str, BaseHex):
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None):
-        return no_info_before_validator_function(cls.__eth_pydantic_validate__, str_schema())
+        return no_info_before_validator_function(
+            cls.__eth_pydantic_validate__, str_schema()
+        )
 
     @classmethod
     def __eth_pydantic_validate__(cls, value):
@@ -70,7 +72,9 @@ class HexStr(BaseHexStr):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         sized_value = hex_value
@@ -97,19 +101,25 @@ class BoundHexStr(BaseHexStr):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
 
         # Integers are always padded to the left, but bytes-types are padded to the right
         # to be ABI-encode compliant.
-        pad_direction = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
+        pad_direction = (
+            PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
+        )
 
         sized_value = cls.validate_size(hex_value, pad_direction=pad_direction)
         return cls(f"0x{sized_value}")
 
     @classmethod
-    def validate_size(cls, value: str, pad_direction: PadDirection = PadDirection.LEFT) -> str:
+    def validate_size(
+        cls, value: str, pad_direction: PadDirection = PadDirection.LEFT
+    ) -> str:
         cls.update_schema()
         return validate_str_size(value, cls.size * 2, pad_direction=pad_direction)
 

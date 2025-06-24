@@ -32,7 +32,9 @@ class Bip122Uri(str):
             f"/{Bip122UriType.BLOCK.value}/"
             f"752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6"
         )
-        pattern = f"^{cls.prefix}[0-9a-f]{{64}}/{Bip122UriType.BLOCK.value}/[0-9a-f]{{64}}$"
+        pattern = (
+            f"^{cls.prefix}[0-9a-f]{{64}}/{Bip122UriType.BLOCK.value}/[0-9a-f]{{64}}$"
+        )
         json_schema.update(examples=[example], pattern=pattern)
         return json_schema
 
@@ -44,7 +46,9 @@ class Bip122Uri(str):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> str:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None
+    ) -> str:
         if not value.startswith(cls.prefix):
             raise Bip122UriFormatError(value)
 
