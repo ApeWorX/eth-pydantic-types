@@ -1,6 +1,5 @@
 from typing import ClassVar
 
-
 schema_pattern = "^0x([0-9a-f][0-9a-f])*$"
 schema_examples = (
     "0x",  # empty bytes

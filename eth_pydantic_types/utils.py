@@ -13,9 +13,7 @@ class PadDirection(str, Enum):
     RIGHT = "right"
 
 
-def validate_size(
-    value: "__SIZED_T", size: int, coerce: Optional[Callable] = None
-) -> "__SIZED_T":
+def validate_size(value: "__SIZED_T", size: int, coerce: Optional[Callable] = None) -> "__SIZED_T":
     if len(value) == size:
         return value
 
@@ -97,11 +95,7 @@ def _coerce_hexbytes_size(
     val_stripped = val.lstrip(b"\x00")
     num_zeroes = max(0, num_bytes - len(val_stripped))
     zeroes = b"\x00" * num_zeroes
-    return (
-        zeroes + val_stripped
-        if pad_direction is PadDirection.LEFT
-        else val_stripped + zeroes
-    )
+    return zeroes + val_stripped if pad_direction is PadDirection.LEFT else val_stripped + zeroes
 
 
 def validate_hex_str(value: str) -> str:

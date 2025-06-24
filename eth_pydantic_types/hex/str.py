@@ -3,8 +3,8 @@ from typing import TYPE_CHECKING, Any, ClassVar, Optional, Union
 from hexbytes.main import HexBytes as BaseHexBytes
 from pydantic_core.core_schema import (
     ValidationInfo,
-    str_schema,
     no_info_before_validator_function,
+    str_schema,
     with_info_before_validator_function,
 )
 
@@ -26,9 +26,7 @@ if TYPE_CHECKING:
 class BaseHexStr(str, BaseHex):
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None):
-        return no_info_before_validator_function(
-            cls.__eth_pydantic_validate__, str_schema()
-        )
+        return no_info_before_validator_function(cls.__eth_pydantic_validate__, str_schema())
 
     @classmethod
     def __eth_pydantic_validate__(cls, value, **kwargs):
@@ -115,9 +113,7 @@ class BoundHexStr(BaseHexStr):
         return cls(f"0x{sized_value}")
 
     @classmethod
-    def validate_size(
-        cls, value: str, pad_direction: PadDirection = PadDirection.LEFT
-    ) -> str:
+    def validate_size(cls, value: str, pad_direction: PadDirection = PadDirection.LEFT) -> str:
         cls.update_schema()
         return validate_str_size(value, cls.size * 2, pad_direction=pad_direction)
 

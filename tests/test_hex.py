@@ -85,9 +85,7 @@ class TestHexBytes:
     def test_model_dump(self, bytes32str):
         model = BytesModel(value=bytes32str)
         actual = model.model_dump()
-        expected = {
-            "value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"
-        }
+        expected = {"value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}
         assert actual == expected
 
     def test_from_bytes(self):
@@ -102,9 +100,7 @@ class TestHexBytes:
             @field_validator("my_bytes", mode="before")
             @classmethod
             def validate_value(cls, value, info):
-                return HexBytes20.__eth_pydantic_validate__(
-                    value, pad=PadDirection.RIGHT
-                )
+                return HexBytes20.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
 
         model = MyModel(my_bytes=1)
         assert model.my_bytes.startswith(HexBytes(1))
@@ -149,9 +145,7 @@ class TestHexStr:
     def test_model_dump(self, bytes32str):
         model = StrModel(value=bytes32str)
         actual = model.model_dump()
-        expected = {
-            "value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"
-        }
+        expected = {"value": "0x9b70bd98ccb5b6434c2ead14d68d15f392435a06ff469f8d1f8cf38b2ae0b0e2"}
         assert actual == expected
 
         model = StrModel(value=3)
@@ -185,9 +179,7 @@ class TestHexStr:
             def validate_value(cls, value, info):
                 field_type = cls.model_fields[info.field_name].annotation
                 assert field_type  # For Mypy
-                return field_type.__eth_pydantic_validate__(
-                    value, pad=PadDirection.RIGHT
-                )
+                return field_type.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
 
         model = MyModel(my_str=1)
         assert model.my_str.startswith("0x01")
@@ -240,9 +232,7 @@ class TestSized:
         for addr in (address, HexBytes(address)):
             model = MyModel(my_address=addr)
             assert len(model.my_address) == 20
-            assert model.my_address == HexBytes(
-                "0xcafac3dd18ac6c6e92c921884f9e4176737c052c"
-            )
+            assert model.my_address == HexBytes("0xcafac3dd18ac6c6e92c921884f9e4176737c052c")
 
     def test_schema(self):
         actual = SizedModel.model_json_schema()
