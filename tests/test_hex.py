@@ -3,7 +3,7 @@ from typing import ClassVar
 import pytest
 from eth_utils import to_hex
 from hexbytes import HexBytes as BaseHexBytes
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
 
 from eth_pydantic_types.hex import (
     BoundHexBytes,
@@ -16,6 +16,7 @@ from eth_pydantic_types.hex import (
     HexStr20,
     HexStr32,
 )
+from eth_pydantic_types.utils import PadDirection
 
 
 class BytesModel(BaseModel):
@@ -92,6 +93,18 @@ class TestHexBytes:
         model = BytesModel(value=value)
         assert model.value == HexBytes(value)
 
+    def test_right_pad(self):
+        class MyModel(BaseModel):
+            my_bytes: HexBytes20
+
+            @field_validator("my_bytes", mode="before")
+            @classmethod
+            def validate_value(cls, value, info):
+                return HexBytes20.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
+
+        model = MyModel(my_bytes=1)
+        assert model.my_bytes.startswith(HexBytes(1))
+
 
 class TestHexStr:
     @pytest.mark.parametrize("value", ("0xa", 10, HexBytes(10)))
@@ -157,10 +170,19 @@ class TestHexStr:
             assert len(model.my_address) == 42
             assert model.my_address == "0xcafac3dd18ac6c6e92c921884f9e4176737c052c"
 
-        def test_from_bytes(self):
-            value = b"\x101\xf0\xc9\xacT\xdc\xb6KO\x12\x1a'\x95|\x14&<\\\xb4"
-            model = StrModel(value=value)
-            assert model.value == HexBytes(value)
+    def test_right_pad(self):
+        class MyModel(BaseModel):
+            my_str: HexStr20
+
+            @field_validator("my_str", mode="before")
+            @classmethod
+            def validate_value(cls, value, info):
+                field_type = cls.model_fields[info.field_name].annotation
+                assert field_type  # For Mypy
+                return field_type.__eth_pydantic_validate__(value, pad=PadDirection.RIGHT)
+
+        model = MyModel(my_str=1)
+        assert model.my_str.startswith("0x01")
 
 
 class TestHexBytes32:

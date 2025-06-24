@@ -27,7 +27,7 @@ class BaseHexInt(int, BaseHex):
         return no_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value):
+    def __eth_pydantic_validate__(cls, value, **kwargs):
         return value  # Override.
 
     @classmethod
@@ -62,7 +62,9 @@ class HexInt(BaseHexInt):
         return schema
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> int:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+    ) -> int:
         return cls(cls.validate_hex(value))
 
 
@@ -87,7 +89,9 @@ class BoundHexInt(BaseHexInt):
         )
 
     @classmethod
-    def __eth_pydantic_validate__(cls, value: Any, info: Optional[ValidationInfo] = None) -> int:
+    def __eth_pydantic_validate__(
+        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+    ) -> int:
         hex_int = cls.validate_hex(value)
         sized_value = cls.validate_size(hex_int)
         return cls(sized_value)

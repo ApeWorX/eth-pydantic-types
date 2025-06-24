@@ -21,6 +21,8 @@ class BaseHex:
     def __get_pydantic_json_schema__(cls, core_schema, handler):
         json_schema = handler(core_schema)
         json_schema.update(
-            format="binary", pattern=cls.schema_pattern, examples=list(cls.schema_examples)
+            format="binary",
+            pattern=cls.schema_pattern,
+            examples=list(cls.schema_examples),
         )
         return json_schema

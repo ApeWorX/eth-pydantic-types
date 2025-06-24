@@ -39,7 +39,9 @@ def validate_bytes_size(
     value: bytes, size: int, pad_direction: PadDirection = PadDirection.LEFT
 ) -> bytes:
     return validate_size(
-        value, size, coerce=lambda v: _coerce_hexbytes_size(v, size, pad_direction=pad_direction)
+        value,
+        size,
+        coerce=lambda v: _coerce_hexbytes_size(v, size, pad_direction=pad_direction),
     )
 
 
@@ -51,7 +53,9 @@ def validate_str_size(
     value: str, size: int, pad_direction: PadDirection = PadDirection.LEFT
 ) -> str:
     return validate_size(
-        value, size, coerce=lambda v: _coerce_hexstr_size(v, size, pad_direction=pad_direction)
+        value,
+        size,
+        coerce=lambda v: _coerce_hexstr_size(v, size, pad_direction=pad_direction),
     )
 
 

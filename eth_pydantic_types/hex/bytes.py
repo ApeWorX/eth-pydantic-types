@@ -40,12 +40,13 @@ class HexBytes(BaseHexBytes, BaseHex):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None
+        cls,
+        value: Any,
+        info: Optional[ValidationInfo] = None,
+        **kwargs,
     ) -> BaseHexBytes:
-
-        # NOTE: We only left-pad integers. All other bytes values are right-padded
-        #   to be compliant with ABI encoding.
-        pad = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
+        if not (pad := kwargs.pop("pad", None)):
+            pad = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
 
         return cls(cls.validate_size(HexBytes(value), pad_direction=pad))
 
