@@ -29,7 +29,7 @@ def validate_in_range(value: int, size: int, signed: bool = True) -> int:
             return value
 
     else:
-        if 0 <= value < 2**size:
+        if 0 <= value < 2 ** (size * 8):
             return value
 
     raise SizeError(size, value)
