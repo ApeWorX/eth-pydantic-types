@@ -97,7 +97,9 @@ class BoundHexInt(BaseHexInt):
         )
 
         # NOTE: Integers should always pad left; else the value increases.
-        schema["serialization"] = create_hex_serializer(size=cls.size, pad=PadDirection.LEFT)
+        schema["serialization"] = create_hex_serializer(
+            size=cls.size, pad=PadDirection.LEFT, force_even_length=False
+        )
 
         return schema
 
