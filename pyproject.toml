@@ -33,7 +33,6 @@ python_files = "test_*.py"
 testpaths = "tests"
 markers = "fuzzing: Run Hypothesis fuzz test suite"
 
-
 [tool.ruff]
 target-version = "py39"
 line-length = 100

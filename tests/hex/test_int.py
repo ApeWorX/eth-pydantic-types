@@ -39,10 +39,14 @@ class TestHexInt:
         assert actual["properties"]["value"]["type"] == "integer"
         assert actual["properties"]["value"]["examples"][0].startswith("0x")
 
-    def test_model_dump(self):
-        model = IntModel(value=10)
+    @pytest.mark.parametrize("value", ("0xa", "0x0a", 10))
+    def test_model_dump(self, value):
+        model = IntModel(value=value)
         actual = model.model_dump()
-        assert actual == {"value": "0x0a"}
+
+        # Notice the odd number of bytes here; that is expected for HexInt.
+        # It is less storage; we know what number it is.
+        assert actual == {"value": "0xa"}
 
     @pytest.mark.parametrize("value", (-1, 2 * 8**256))
     def test_out_of_bounds(self, value):
