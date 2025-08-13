@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
 
 from hexbytes.main import HexBytes as BaseHexBytes
 from pydantic_core.core_schema import (
@@ -21,6 +21,9 @@ if TYPE_CHECKING:
     from typing_extensions import TypeAlias
 
 
+HexBytesSelf = TypeVar("HexBytesSelf", bound="HexBytes")
+
+
 class HexBytes(BaseHexBytes, BaseHex):
     """
     Use when receiving ``hexbytes.HexBytes`` values. Includes
@@ -28,30 +31,32 @@ class HexBytes(BaseHexBytes, BaseHex):
     """
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handle=None) -> "CoreSchema":
+    def __get_pydantic_core_schema__(cls: type[HexBytesSelf], value, handle=None) -> "CoreSchema":
         schema = with_info_before_validator_function(cls.__eth_pydantic_validate__, bytes_schema())
         schema["serialization"] = hex_serializer
         return schema
 
     @classmethod
-    def fromhex(cls, hex_str: str) -> "HexBytes":
+    def fromhex(cls: type[HexBytesSelf], hex_str: str) -> HexBytesSelf:
         value = hex_str[2:] if hex_str.startswith("0x") else hex_str
         return super().fromhex(value)
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls,
+        cls: type[HexBytesSelf],
         value: Any,
         info: Optional[ValidationInfo] = None,
         **kwargs,
-    ) -> BaseHexBytes:
+    ) -> HexBytesSelf:
         if not (pad := kwargs.pop("pad", None)):
             pad = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
 
         return cls(cls.validate_size(HexBytes(value), pad_direction=pad))
 
     @classmethod
-    def validate_size(cls, value: bytes, pad_direction: PadDirection = PadDirection.LEFT) -> bytes:
+    def validate_size(
+        cls: type[HexBytesSelf], value: bytes, pad_direction: PadDirection = PadDirection.LEFT
+    ) -> bytes:
         return value
 
 
@@ -64,7 +69,7 @@ class BoundHexBytes(HexBytes):
     size: ClassVar[int] = 32
 
     @classmethod
-    def __get_pydantic_core_schema__(cls, value, handle=None) -> "CoreSchema":
+    def __get_pydantic_core_schema__(cls: type[HexBytesSelf], value, handle=None) -> "CoreSchema":
         schema = with_info_before_validator_function(
             cls.__eth_pydantic_validate__,
             bytes_schema(max_length=cls.size, min_length=cls.size),
@@ -73,7 +78,9 @@ class BoundHexBytes(HexBytes):
         return schema
 
     @classmethod
-    def validate_size(cls, value: bytes, pad_direction: PadDirection = PadDirection.LEFT) -> bytes:
+    def validate_size(
+        cls: type[HexBytesSelf], value: bytes, pad_direction: PadDirection = PadDirection.LEFT
+    ) -> bytes:
         str_size = cls.size * 2
         cls.schema_pattern = get_hash_pattern(str_size)
         cls.schema_examples = get_hash_examples(str_size)
