@@ -105,3 +105,11 @@ def test_custom_type():
 
     model_json = model.model_dump_json()
     assert model_json == '{"network_id":"0x0000000000aa36a7"}'
+
+
+def test_0x():
+    model = IntModel(value="0x")
+    assert model.value == 0
+
+    model = HexInt32Model(value="0x")
+    assert model.value == 0
