@@ -111,5 +111,5 @@ def test_0x():
     model = IntModel(value="0x")
     assert model.value == 0
 
-    model = HexInt32Model(value="0x")
-    assert model.value == 0
+    model2 = HexInt32Model(value="0x")
+    assert model2.value == 0
