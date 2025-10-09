@@ -1,6 +1,6 @@
 from enum import Enum
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 from pydantic_core.core_schema import (
     ValidationInfo,
@@ -45,7 +45,7 @@ class Bip122Uri(str):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
         if not value.startswith(cls.prefix):
             raise Bip122UriFormatError(value)

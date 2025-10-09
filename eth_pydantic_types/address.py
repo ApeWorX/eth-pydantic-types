@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import TYPE_CHECKING, Annotated, Any, ClassVar, Optional
+from typing import TYPE_CHECKING, Annotated, Any, ClassVar
 
 from cchecksum import to_checksum_address
 from eth_typing import ChecksumAddress
@@ -44,7 +44,7 @@ class Address(HexStr20):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
         value = super().__eth_pydantic_validate__(value)
         return cls.to_checksum_address(value)
