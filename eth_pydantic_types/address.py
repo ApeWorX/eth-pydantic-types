@@ -87,5 +87,5 @@ def __getattr__(name: str):
 
 __all__ = [
     "Address",
-    "Address",
+    "AddressType",  # noqa: F822
 ]
