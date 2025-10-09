@@ -22,9 +22,9 @@ jobs:
         - name: Install Dependencies
           run: |
             python -m pip install --upgrade pip
-            pip install -r cz-requirement.txt
+            pip install commitlint
 
         - name: Check PR Title
           env:
               TITLE: ${{ github.event.pull_request.title }}
-          run: cz check --message "$TITLE"
+          run: commitlint "$TITLE"

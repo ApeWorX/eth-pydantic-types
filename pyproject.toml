@@ -68,8 +68,7 @@ release = [  # `release` GitHub Action job uses this
     "packaging>=23.1,<24",  # Needed for twine
 ]
 dev = [
-    # commitizen: Manage commits and publishing releases
-    #(here / "cz-requirement.txt").read_text().strip(),
+    "commitlint",  # Check for conventionalcommits
     "pre-commit",  # Ensure that linters are run prior to committing
     "pytest-watch",  # `ptw` test watcher/runner
     "ipdb",  # Debugger (Must use `export PYTHONBREAKPOINT=ipdb.set_trace`)
