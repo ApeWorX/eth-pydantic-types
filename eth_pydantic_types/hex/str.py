@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from hexbytes.main import HexBytes as BaseHexBytes
 from pydantic_core.core_schema import (
@@ -39,7 +39,7 @@ class BaseHexStr(str, BaseHex):
         return cls(hex_str)
 
     @classmethod
-    def validate_hex(cls, data: Union[bytes, str, int]):
+    def validate_hex(cls, data: bytes | str | int):
         if isinstance(data, bytes):
             return cls.from_bytes(data)
 
@@ -71,7 +71,7 @@ class HexStr(BaseHexStr):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
@@ -100,7 +100,7 @@ class BoundHexStr(BaseHexStr):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
         if not (pad := kwargs.pop("pad", None)):
             # Integers are always padded to the left, but bytes-types are padded to the right

@@ -1,15 +1,13 @@
-from typing import Optional, Union
-
 from pydantic_core.core_schema import plain_serializer_function_ser_schema
 
 from eth_pydantic_types.utils import PadDirection, validate_str_size
 
 
 def serialize_hex(
-    value: Union[int, bytes],
-    size: Optional[int] = None,
-    pad: Optional[PadDirection] = None,
-    force_even_length: Optional[bool] = None,
+    value: int | bytes,
+    size: int | None = None,
+    pad: PadDirection | None = None,
+    force_even_length: bool | None = None,
 ) -> str:
     hex_value = value.hex() if isinstance(value, bytes) else hex(value)
     hex_value = hex_value[2:] if hex_value.startswith("0x") else hex_value
@@ -29,9 +27,9 @@ def serialize_hex(
 
 
 def create_hex_serializer(
-    size: Optional[int] = None,
-    pad: Optional[PadDirection] = None,
-    force_even_length: Optional[bool] = None,
+    size: int | None = None,
+    pad: PadDirection | None = None,
+    force_even_length: bool | None = None,
 ):
     return plain_serializer_function_ser_schema(
         function=lambda value: serialize_hex(

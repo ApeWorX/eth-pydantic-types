@@ -1,10 +1,84 @@
 [build-system]
 requires = ["setuptools>=75.6.0", "wheel", "setuptools_scm[toml]>=5.0"]
 
-[tool.mypy]
-exclude = ["build/", "dist/", "docs/"]
-check_untyped_defs = true
-plugins = ["pydantic.mypy"]
+[project.urls]
+Repository = "https://github.com/ApeWorX/eth-pydantic-types"
+Issues = "https://github.com/ApeWorX/eth-pydantic-types/issues"
+Documentation = "https://docs.apeworx.io/eth-pydantic-types"
+
+[project]
+name = "eth-pydantic-types"
+dynamic = ["version"]
+license = "Apache-2.0"
+description = "Pydantic Types for Ethereum"
+keywords = ["ethereum", "pydantic", "validation"]
+readme = "README.md"
+authors = [
+    { name = "ApeWorX Ltd.", email="admin@apeworx.io"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+requires-python = ">=3.10,<4"
+dependencies = [
+    "cchecksum>=0.0.3,<1",
+    "hexbytes>=0.3.1,<2",
+    "eth-utils>=2.3.1,<6",
+    "eth-typing>=3.5.2,<6",
+    "pydantic>=2.5.2,<3",
+    "typing_extensions>=4.8.0,<5",
+]
+
+[dependency-groups]
+test = [  # `test` GitHub Action jobs uses this
+    "pytest>=6.0",  # Core testing package
+    "pytest-xdist",  # Multi-process runner
+    "pytest-cov>=4.0.0,<5",  # Coverage analyzer plugin
+    "pytest-mock",  # For creating mocks
+    "hypothesis>=6.2.0,<7.0",  # Strategy-based fuzzer
+    "hypothesis-jsonschema==0.19.0",  # JSON Schema fuzzer extension
+    "eth-hash[pycryptodome]",  # For backends to work
+]
+lint = [
+    "ruff>=0.12.0",  # Unified linter and formatter
+    "mypy>=1.16.1,<2",  # Static type analyzer
+    "types-setuptools",  # Needed for mypy type shed
+    "mdformat>=0.7.22",  # Auto-formatter for markdown
+    "mdformat-gfm>=0.3.5",  # Needed for formatting GitHub-flavored markdown
+    "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
+    "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
+]
+doc = [
+    "sphinx-ape",
+]
+release = [  # `release` GitHub Action job uses this
+    "wheel",  # Packaging tool
+    "twine==3.8.0",  # Package upload tool
+    "packaging>=23.1,<24",  # Needed for twine
+]
+dev = [
+    "commitlint",  # Check for conventionalcommits
+    "pre-commit",  # Ensure that linters are run prior to committing
+    "pytest-watch",  # `ptw` test watcher/runner
+    "ipdb",  # Debugger (Must use `export PYTHONBREAKPOINT=ipdb.set_trace`)
+    {include-group = "test"},
+    {include-group = "lint"},
+    {include-group = "doc"},
+]
+
+[tool.setuptools]
+packages = ["eth_pydantic_types"]
 
 [tool.setuptools_scm]
 # The fallback version is so that CI/CD systems will use a more accurate version.
@@ -14,15 +88,6 @@ plugins = ["pydantic.mypy"]
 # NOTE: This should be bumped with every minor release!
 fallback_version = "0.1.0"
 write_to = "eth_pydantic_types/version.py"
-
-# NOTE: you have to use single-quoted strings in TOML for regular expressions.
-# It's the equivalent of r-strings in Python.  Multiline strings are treated as
-# verbose regular expressions by Black.  Use [ ] to denote a significant space
-# character.
-[tool.black]
-line-length = 100
-target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
-include = '\.pyi?$'
 
 [tool.pytest.ini_options]
 addopts = """
@@ -151,3 +216,8 @@ docstring-code-format = true
 
 [tool.mdformat]
 number = true
+
+[tool.mypy]
+exclude = ["build/", "dist/", "docs/"]
+check_untyped_defs = true
+plugins = ["pydantic.mypy"]
