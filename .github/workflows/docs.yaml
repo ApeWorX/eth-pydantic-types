@@ -25,13 +25,9 @@ jobs:
     steps:
     - uses: actions/checkout@v5
     - uses: astral-sh/setup-uv@v6
-      with:
-        python-version: "3.10"
 
     - name: Install Dependencies
-      run: |
-        uv venv
-        uv pip install . --group doc
+      run: uv pip install --system . --group doc
 
     - name: Ape Docs
       uses: apeworx/sphinx-ape@main
