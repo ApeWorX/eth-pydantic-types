@@ -27,7 +27,10 @@ jobs:
     - uses: astral-sh/setup-uv@v6
 
     - name: Install Dependencies
-      run: uv pip install --system . --group doc
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install . --group doc
 
     - name: Ape Docs
       uses: apeworx/sphinx-ape@main
