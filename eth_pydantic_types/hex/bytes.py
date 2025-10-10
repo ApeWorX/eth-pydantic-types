@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
 
 from hexbytes.main import HexBytes as BaseHexBytes
 from pydantic_core.core_schema import (
@@ -45,7 +45,7 @@ class HexBytes(BaseHexBytes, BaseHex):
     def __eth_pydantic_validate__(
         cls: type[HexBytesSelf],
         value: Any,
-        info: Optional[ValidationInfo] = None,
+        info: ValidationInfo | None = None,
         **kwargs,
     ) -> HexBytesSelf:
         if not (pad := kwargs.pop("pad", None)):

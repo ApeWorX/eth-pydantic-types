@@ -1,10 +1,4 @@
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    ClassVar,
-    Optional,
-    Union,
-)
+from typing import TYPE_CHECKING, Any, ClassVar
 
 from pydantic_core.core_schema import (
     ValidationInfo,
@@ -44,7 +38,7 @@ class BaseHexInt(int, BaseHex):
         return cls(int_value)
 
     @classmethod
-    def validate_hex(cls, data: Union[bytes, str, int]):
+    def validate_hex(cls, data: bytes | str | int):
         if isinstance(data, int):
             return cls(data)
 
@@ -75,7 +69,7 @@ class HexInt(BaseHexInt):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> int:
         return cls(cls.validate_hex(value))
 
@@ -109,7 +103,7 @@ class BoundHexInt(BaseHexInt):
 
     @classmethod
     def __eth_pydantic_validate__(
-        cls, value: Any, info: Optional[ValidationInfo] = None, **kwargs
+        cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> int:
         hex_int = cls.validate_hex(value)
         sized_value = cls.validate_size(hex_int)

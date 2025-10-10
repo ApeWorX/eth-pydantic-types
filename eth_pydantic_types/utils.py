@@ -1,6 +1,6 @@
 from collections.abc import Sized
 from enum import Enum
-from typing import TYPE_CHECKING, Callable, Optional, TypeVar
+from typing import TYPE_CHECKING, Callable, TypeVar
 
 from eth_pydantic_types._error import HexValueError, SizeError
 
@@ -13,7 +13,7 @@ class PadDirection(str, Enum):
     RIGHT = "right"
 
 
-def validate_size(value: "__SIZED_T", size: int, coerce: Optional[Callable] = None) -> "__SIZED_T":
+def validate_size(value: "__SIZED_T", size: int, coerce: Callable | None = None) -> "__SIZED_T":
     if len(value) == size:
         return value
 
