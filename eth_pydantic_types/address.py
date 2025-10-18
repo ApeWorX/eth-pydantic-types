@@ -9,11 +9,10 @@ from pydantic_core.core_schema import (
     with_info_before_validator_function,
 )
 
+from eth_pydantic_types.hex import HexStr20
 from eth_pydantic_types.utils import (
     PadDirection,
 )
-
-from eth_pydantic_types.hex import HexStr20
 
 if TYPE_CHECKING:
     from pydantic_core import CoreSchema
