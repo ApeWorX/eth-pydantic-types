@@ -10,6 +10,9 @@ from pydantic_core.core_schema import (
 )
 
 from eth_pydantic_types.hex import HexStr20
+from eth_pydantic_types.utils import (
+    PadDirection,
+)
 
 if TYPE_CHECKING:
     from pydantic_core import CoreSchema
@@ -46,7 +49,7 @@ class Address(HexStr20):
     def __eth_pydantic_validate__(
         cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
-        value = super().__eth_pydantic_validate__(value)
+        value = super().__eth_pydantic_validate__(value, info, pad=PadDirection.LEFT)
         return cls.to_checksum_address(value)
 
     @classmethod
