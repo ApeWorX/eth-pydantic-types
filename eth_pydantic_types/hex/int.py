@@ -46,7 +46,11 @@ class BaseHexInt(int, BaseHex):
             return cls.from_bytes(data)
 
         elif isinstance(data, str):
-            return cls(int(validate_hex_str(data), 16))
+            value = validate_hex_str(data)
+            if value == "0x":
+                return 0
+
+            return cls(int(value, 16))
 
         raise HexValueError(data)
 
