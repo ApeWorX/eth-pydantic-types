@@ -32,6 +32,11 @@ jobs:
         source .venv/bin/activate
         uv pip install . --group doc
 
+    - name: Debug Dependencies
+      run: |
+        source .venv/bin/activate
+        pip freeze
+
     - name: Ape Docs
       uses: apeworx/sphinx-ape@main
       with:
