@@ -60,7 +60,9 @@ lint = [
     "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
 ]
 doc = [
-    "sphinx-ape",
+    "sphinx-ape==0.1.0",
+    "eth-ape<0.8.0",
+    "eth-typing<5.0.0",
 ]
 release = [  # `release` GitHub Action job uses this
     "wheel",  # Packaging tool
