@@ -1,5 +1,6 @@
 [build-system]
 requires = ["setuptools>=75.6.0", "wheel", "setuptools_scm[toml]>=5.0"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 Repository = "https://github.com/ApeWorX/eth-pydantic-types"
@@ -63,9 +64,7 @@ doc = [
     "sphinx-ape==0.1.0",
 ]
 release = [  # `release` GitHub Action job uses this
-    "wheel",  # Packaging tool
-    "twine==3.8.0",  # Package upload tool
-    "packaging>=23.1,<24",  # Needed for twine
+    "build",  # Package build tool
 ]
 dev = [
     "commitlint",  # Check for conventionalcommits
