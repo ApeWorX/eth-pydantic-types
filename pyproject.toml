@@ -60,11 +60,8 @@ lint = [
     "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
     "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
 ]
-doc = [
+docs = [
     "sphinx-ape==0.1.0",
-]
-release = [  # `release` GitHub Action job uses this
-    "build",  # Package build tool
 ]
 dev = [
     "commitlint",  # Check for conventionalcommits
