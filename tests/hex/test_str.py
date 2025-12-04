@@ -95,3 +95,7 @@ class TestHexStr:
 
         model = MyModel(my_str=1)
         assert model.my_str.startswith("0x01")
+
+    def test_0x(self):
+        model = StrModel(value="0x")
+        assert model.value == "0x"
