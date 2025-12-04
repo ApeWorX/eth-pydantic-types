@@ -30,7 +30,7 @@ jobs:
       run: |
         uv venv
         source .venv/bin/activate
-        uv pip install . --group doc
+        uv pip install . --group docs
 
     - name: Ape Docs
       uses: apeworx/sphinx-ape@main
