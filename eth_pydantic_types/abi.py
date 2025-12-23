@@ -10,6 +10,7 @@ from typing_extensions import TypeAliasType
 from .address import Address
 from .hex import BoundHexBytes, HexBytes
 
+bool = TypeAliasType("bool", bool)
 bytes = TypeAliasType("bytes", HexBytes)
 string = TypeAliasType("string", str)
 address = TypeAliasType("address", Address)
