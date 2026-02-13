@@ -61,7 +61,7 @@ lint = [
     "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
 ]
 docs = [
-    "sphinx-ape==0.1.0",
+    "sphinx-ape>=0.1.2,<2",
 ]
 dev = [
     "commitlint",  # Check for conventionalcommits
