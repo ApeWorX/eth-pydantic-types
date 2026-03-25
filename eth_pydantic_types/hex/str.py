@@ -39,18 +39,21 @@ class BaseHexStr(str, BaseHex):
         return cls(hex_str)
 
     @classmethod
-    def validate_hex(cls, data: bytes | str | int):
+    def validate_hex(cls, data: bytes | str | int, prefixed: bool = True):
         if isinstance(data, bytes):
-            return cls.from_bytes(data)
-
+            result = cls.from_bytes(data)
         elif isinstance(data, str):
-            return validate_hex_str(data)
-
+            result = validate_hex_str(data)
         elif isinstance(data, int):
             hex_value = BaseHexBytes(data).hex()
-            return hex_value if hex_value.startswith("0x") else f"0x{hex_value}"
+            result = hex_value if hex_value.startswith("0x") else f"0x{hex_value}"
+        else:
+            raise HexValueError(data)
 
-        raise HexValueError(data)
+        if not prefixed and result.startswith("0x"):
+            return result[2:]
+
+        return result
 
     def __int__(self) -> int:
         return int(self, 16)
@@ -75,8 +78,7 @@ class HexStr(BaseHexStr):
     ) -> str:
         hex_str = cls.validate_hex(value)
         hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
-        sized_value = hex_value
-        return cls(f"0x{sized_value}")
+        return cls(f"0x{hex_value}")
 
     @classmethod
     def from_bytes(cls, data: bytes) -> "HexStr":
@@ -107,10 +109,10 @@ class BoundHexStr(BaseHexStr):
             # to be ABI-encode compliant.
             pad = PadDirection.LEFT if isinstance(value, int) else PadDirection.RIGHT
 
-        hex_str = cls.validate_hex(value)
-        hex_value = hex_str[2:] if hex_str.startswith("0x") else hex_str
-        sized_value = cls.validate_size(hex_value, pad_direction=pad)
-        return cls(f"0x{sized_value}")
+        prefixed = kwargs.pop("prefixed", True)
+        hex_str = cls.validate_hex(value, prefixed=False)
+        sized_value = cls.validate_size(hex_str, pad_direction=pad)
+        return cls(f"0x{sized_value}") if prefixed else cls(sized_value)
 
     @classmethod
     def validate_size(cls, value: str, pad_direction: PadDirection = PadDirection.LEFT) -> str:
