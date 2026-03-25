@@ -114,3 +114,24 @@ class TestSized:
         assert rightpad.valuestr == (
             "0x0500000000000000000000000000000000000000000000000000000000000000"
         )
+
+    def test_no_prefix(self):
+        """
+        Ensure the lack of prefix doesn't disrupt sizing from str.
+        """
+
+        class SimpleModel(BaseModel):
+            valuestr: HexStr32
+
+        # len(value_no_prefix) == 64 (32 bytes).
+        value_no_prefix = "58372ab62269a52fa636ad7f200d93999595dcaf000000000000000000000000"
+
+        actual = SimpleModel(valuestr=value_no_prefix)
+        assert len(actual.valuestr) == 66
+
+        # len(smaller_value_no_prefix) == 40, like an address.
+        smaller_value_no_prefix = "58372ab62269a52fa636ad7f200d93999595dcaf"
+
+        # It should have correctly sized.
+        actual = SimpleModel(valuestr=smaller_value_no_prefix)
+        assert len(actual.valuestr) == 66
