@@ -115,6 +115,38 @@ message = Message(
 )
 ```
 
+## Custom Types
+
+You can build your own hex types by subclassing and passing kwargs to the validators.
+For example, here is a 32-byte hash type without the `0x` prefix:
+
+```python
+from pydantic import BaseModel
+from pydantic_core.core_schema import with_info_before_validator_function, str_schema
+
+from eth_pydantic_types import HexStr32
+
+
+class MyAddress(HexStr32):
+    @classmethod
+    def __get_pydantic_core_schema__(cls, value, handler=None):
+        str_size = cls.size * 2
+        return with_info_before_validator_function(
+            cls.__eth_pydantic_validate__,
+            str_schema(max_length=str_size, min_length=str_size),
+        )
+
+    @classmethod
+    def __eth_pydantic_validate__(cls, value, info=None, **kwargs):
+        return super().__eth_pydantic_validate__(value, info=info, prefixed=False, **kwargs)
+
+
+class MyModel(BaseModel):
+    address: MyAddress
+
+model = MyModel(address="0x" + "ab" * 32)
+```
+
 ## Padding
 
 For types like `HexStr` or `HexBytes`, you can control the padding by using `@field_validator()`.
