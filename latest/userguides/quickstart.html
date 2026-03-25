@@ -84,6 +84,7 @@ data-aria-dark="Switch to auto color mode">
 <li><a class="reference internal" href="#address">Address</a></li>
 <li><a class="reference internal" href="#id1">HexStr</a></li>
 <li><a class="reference internal" href="#bip122uri">Bip122Uri</a></li>
+<li><a class="reference internal" href="#custom-types">Custom Types</a></li>
 <li><a class="reference internal" href="#padding">Padding</a></li>
 </ul>
 </div><div id="ethical-ad-placement" data-ea-publisher="readthedocs"></div></div>
@@ -250,6 +251,37 @@ This type serializes to a <code class="docutils literal notranslate"><span class
 </span><span data-line="10">        <span class="s2">&quot;/block/752820c0ad7abc1200f9ad42c4adc6fbb4bd44b5bed4667990e64565102c1ba6&quot;</span>
 </span><span data-line="11">    <span class="p">)</span>
 </span><span data-line="12"><span class="p">)</span>
+</span></pre></div>
+</div>
+</section>
+<section id="custom-types">
+<h2>Custom Types<a class="headerlink" href="#custom-types" title="Link to this heading"></a></h2>
+<p>You can build your own hex types by subclassing and passing kwargs to the validators.
+For example, here is a 32-byte hash type without the <code class="docutils literal notranslate"><span class="pre">0x</span></code> prefix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span data-line="1"><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+</span><span data-line="2"><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic_core.core_schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">with_info_before_validator_function</span><span class="p">,</span> <span class="n">str_schema</span>
+</span><span data-line="3">
+</span><span data-line="4"><span class="kn">from</span><span class="w"> </span><span class="nn">eth_pydantic_types</span><span class="w"> </span><span class="kn">import</span> <span class="n">HexStr32</span>
+</span><span data-line="5">
+</span><span data-line="6">
+</span><span data-line="7"><span class="k">class</span><span class="w"> </span><span class="nc">MyAddress</span><span class="p">(</span><span class="n">HexStr32</span><span class="p">):</span>
+</span><span data-line="8">    <span class="nd">@classmethod</span>
+</span><span data-line="9">    <span class="k">def</span><span class="w"> </span><span class="nf">__get_pydantic_core_schema__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">handler</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+</span><span data-line="10">        <span class="n">str_size</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="mi">2</span>
+</span><span data-line="11">        <span class="k">return</span> <span class="n">with_info_before_validator_function</span><span class="p">(</span>
+</span><span data-line="12">            <span class="bp">cls</span><span class="o">.</span><span class="n">__eth_pydantic_validate__</span><span class="p">,</span>
+</span><span data-line="13">            <span class="n">str_schema</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="n">str_size</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="n">str_size</span><span class="p">),</span>
+</span><span data-line="14">        <span class="p">)</span>
+</span><span data-line="15">
+</span><span data-line="16">    <span class="nd">@classmethod</span>
+</span><span data-line="17">    <span class="k">def</span><span class="w"> </span><span class="nf">__eth_pydantic_validate__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+</span><span data-line="18">        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__eth_pydantic_validate__</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">,</span> <span class="n">prefixed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</span><span data-line="19">
+</span><span data-line="20">
+</span><span data-line="21"><span class="k">class</span><span class="w"> </span><span class="nc">MyModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+</span><span data-line="22">    <span class="n">address</span><span class="p">:</span> <span class="n">MyAddress</span>
+</span><span data-line="23">
+</span><span data-line="24"><span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="s2">&quot;0x&quot;</span> <span class="o">+</span> <span class="s2">&quot;ab&quot;</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span>
 </span></pre></div>
 </div>
 </section>
