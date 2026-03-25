@@ -43,10 +43,10 @@ class BaseHexStr(str, BaseHex):
         if isinstance(data, bytes):
             result = cls.from_bytes(data)
         elif isinstance(data, str):
-            result = validate_hex_str(data)
+            result = cls(validate_hex_str(data))
         elif isinstance(data, int):
             hex_value = BaseHexBytes(data).hex()
-            result = hex_value if hex_value.startswith("0x") else f"0x{hex_value}"
+            result = cls(hex_value if hex_value.startswith("0x") else f"0x{hex_value}")
         else:
             raise HexValueError(data)
 
