@@ -115,7 +115,7 @@ class TestSized:
             "0x0500000000000000000000000000000000000000000000000000000000000000"
         )
 
-    def test_no_prefix(self):
+    def test_prefix(self):
         """
         Ensure the lack of prefix doesn't disrupt sizing from str.
         """
@@ -131,7 +131,9 @@ class TestSized:
 
         # len(smaller_value_no_prefix) == 40, like an address.
         smaller_value_no_prefix = "58372ab62269a52fa636ad7f200d93999595dcaf"
+        actual = SimpleModel(valuestr=smaller_value_no_prefix)
+        assert len(actual.valuestr) == 66
 
-        # It should have correctly sized.
+        smaller_value_no_prefix = "0x58372ab62269a52fa636ad7f200d93999595dcaf"
         actual = SimpleModel(valuestr=smaller_value_no_prefix)
         assert len(actual.valuestr) == 66
