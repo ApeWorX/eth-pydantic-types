@@ -13,9 +13,11 @@ Use `HexStr` in your models:
 from pydantic import BaseModel
 from eth_pydantic_types import HexStr, HexStr32
 
+
 class TransactionData(BaseModel):
     hash_any_size: HexStr
     sized_hash: HexStr32
+
 
 data = TransactionData(hash_any_size="0x123", sized_hash="0x000123")
 assert isinstance(data.nonce, str)
@@ -33,9 +35,11 @@ Use `HexBytes` in your models:
 from pydantic import BaseModel
 from eth_pydantic_types import HexBytes, HexBytes32
 
+
 class TransactionData(BaseModel):
     hash_any_size: HexBytes
     sized_hash: HexBytes32
+
 
 data = TransactionData(hash_any_size="0x123", sized_hash="0x000123")
 assert isinstance(data.nonce, str)
@@ -53,9 +57,11 @@ Use `HexInt` in your models:
 from pydantic import BaseModel
 from eth_pydantic_types import HexInt
 
+
 class TransactionData(BaseModel):
     nonce: HexInt
     gas: HexInt
+
 
 data = TransactionData(nonce="0x123", gas="0x000123")
 assert isinstance(data.nonce, int)
@@ -72,8 +78,10 @@ Addresses serialize to `str` in the Pydantic core schema and `string` in the JSO
 from pydantic import BaseModel
 from eth_pydantic_types import Address
 
+
 class Account(BaseModel):
     address: Address
+
 
 # NOTE: The address ends up checksummed
 #   ("0x0837207e343277CBd6c114a45EC0e9Ec56a1AD84")
@@ -89,8 +97,10 @@ The `HexStr` type serializes to `str` in the Pydantic core schema and a `string`
 from eth_pydantic_types import HexStr
 from pydantic import BaseModel
 
+
 class Tx(BaseModel):
     data: HexStr
+
 
 tx = Tx(data="0x0123")
 ```
@@ -104,8 +114,10 @@ This type serializes to a `str` in the Pydantic core schema as well as a `string
 from eth_pydantic_types import Bip122Uri
 from pydantic import BaseModel
 
+
 class Message(BaseModel):
     path: Bip122Uri
+
 
 message = Message(
     path=(
@@ -144,6 +156,7 @@ class MyAddress(HexStr32):
 class MyModel(BaseModel):
     address: MyAddress
 
+
 model = MyModel(address="0x" + "ab" * 32)
 ```
 
@@ -155,6 +168,7 @@ For types like `HexStr` or `HexBytes`, you can control the padding by using `@fi
 from pydantic import BaseModel, field_validator
 from eth_pydantic_types import HexStr20, HexBytes20
 from eth_pydantic_types.utils import Pad
+
 
 class MyModel(BaseModel):
     my_str: HexStr20
