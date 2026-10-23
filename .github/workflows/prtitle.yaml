@@ -8,10 +8,13 @@ on:
       - synchronize
 
 jobs:
-    pr-title:
-        runs-on: ubuntu-latest
+  check:
+    runs-on: ubuntu-latest
 
-        steps:
-        - uses: astral-sh/setup-uv@v6
-        - name: Check PR Title
-          run: uvx commitlint "${{ github.event.pull_request.title }}"
+    steps:
+    - uses: astral-sh/setup-uv@v7
+
+    - name: Check PR Title
+      env:
+        PR_TITLE: ${{ github.event.pull_request.title }}
+      run: uvx commitlint "$PR_TITLE"
