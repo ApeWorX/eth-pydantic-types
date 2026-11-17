@@ -1,6 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
+import eth_pydantic_types.address as address_module
 from eth_pydantic_types.address import Address, AddressType
 from eth_pydantic_types.hex import HexBytes
 
@@ -47,8 +48,6 @@ def test_invalid_address(address):
 
 
 def test_module_missing_attribute():
-    import eth_pydantic_types.address as address_module
-
     with pytest.raises(AttributeError):
         _ = address_module.DoesNotExist
 
