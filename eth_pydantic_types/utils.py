@@ -72,7 +72,8 @@ def _coerce_hexstr_size(
     if len(val) == length:
         return val
 
-    val_stripped = val.lstrip("0")
+    # Only an oversized value sheds its leading zeroes; a short one keeps them.
+    val_stripped = val.lstrip("0") if len(val) > length else val
 
     # Ensure is still even.
     if len(val_stripped) % 2 != 0:
@@ -94,7 +95,8 @@ def _coerce_hexbytes_size(
     if len(val) == num_bytes:
         return val
 
-    val_stripped = val.lstrip(b"\x00")
+    # Only an oversized value sheds its leading zeroes; a short one keeps them.
+    val_stripped = val.lstrip(b"\x00") if len(val) > num_bytes else val
     num_zeroes = max(0, num_bytes - len(val_stripped))
     zeroes = b"\x00" * num_zeroes
     return zeroes + val_stripped if pad_direction is PadDirection.LEFT else val_stripped + zeroes
