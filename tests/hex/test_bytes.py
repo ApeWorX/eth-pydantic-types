@@ -116,3 +116,14 @@ class TestBoundHexBytes:
     def test_right_pad_keeps_leading_zero_bytes(self, value):
         actual = HexBytes32.__eth_pydantic_validate__(bytes.fromhex(value[2:]))
         assert actual == bytes.fromhex(value[2:]) + b"\x00" * 12
+
+
+def test_bound_schema_before_validation():
+    class Selector(BoundHexBytes):
+        size: ClassVar[int] = 4
+
+    class Model(BaseModel):
+        value: Selector
+
+    prop = Model.model_json_schema()["properties"]["value"]
+    assert prop["pattern"] == "^0x[a-fA-F0-9]{8}$"

@@ -8,7 +8,11 @@ def serialize_hex(
     size: int | None = None,
     pad: PadDirection | None = None,
     force_even_length: bool | None = None,
+    modulus: int | None = None,
 ) -> str:
+    if modulus is not None and isinstance(value, int):
+        value %= modulus
+
     hex_value = value.hex() if isinstance(value, bytes) else hex(value)
     hex_value = hex_value[2:] if hex_value.startswith("0x") else hex_value
 
@@ -30,10 +34,11 @@ def create_hex_serializer(
     size: int | None = None,
     pad: PadDirection | None = None,
     force_even_length: bool | None = None,
+    modulus: int | None = None,
 ):
     return plain_serializer_function_ser_schema(
         function=lambda value: serialize_hex(
-            value, size=size, pad=pad, force_even_length=force_even_length
+            value, size=size, pad=pad, force_even_length=force_even_length, modulus=modulus
         )
     )
 

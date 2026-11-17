@@ -56,10 +56,10 @@ class BaseHexStr(str, BaseHex):
         return result
 
     def __int__(self) -> int:
-        return int(self, 16)
+        return int(self.removeprefix("0x") or "0", 16)
 
     def __bytes__(self) -> bytes:
-        return bytes.fromhex(self[2:])
+        return bytes.fromhex(self.removeprefix("0x"))
 
 
 class HexStr(BaseHexStr):

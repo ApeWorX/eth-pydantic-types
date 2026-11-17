@@ -46,6 +46,13 @@ def test_invalid_address(address):
         Model(address=address, address_type=address)
 
 
+def test_module_missing_attribute():
+    import eth_pydantic_types.address as address_module
+
+    with pytest.raises(AttributeError):
+        _ = address_module.DoesNotExist
+
+
 def test_schema():
     actual = Model.model_json_schema()
     prop = actual["properties"]["address"]

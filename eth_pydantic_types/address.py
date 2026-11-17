@@ -87,6 +87,8 @@ def __getattr__(name: str):
     elif name == "AddressType":
         return _factory.address_type
 
+    raise AttributeError(name)
+
 
 __all__ = [
     "Address",

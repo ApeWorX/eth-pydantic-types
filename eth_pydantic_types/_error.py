@@ -24,7 +24,7 @@ def SizeError(size: Any, value: Any) -> "PydanticCustomError":
     return CustomError(SizeError, "size of value", size=size, value=value)
 
 
-def Bip122UriFormatError(value: str) -> "PydanticCustomError":
+def Bip122UriFormatError(value: Any) -> "PydanticCustomError":
     return CustomError(
         Bip122UriFormatError,
         "BIP-122 URI format",

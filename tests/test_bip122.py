@@ -29,6 +29,7 @@ def test_parsed():
         f"blockchain://foo/block/{BLOCK_HASH}",
         f"blockchain://{GENESIS_HASH}/block/foo",
         f"blockchain://{GENESIS_HASH}/tx/foo",
+        5,
     ),
 )
 def test_invalid_bip122(uri):

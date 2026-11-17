@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
 from pydantic_core.core_schema import (
     ValidationInfo,
@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 
 
 class BaseHexInt(int, BaseHex):
+    signed: ClassVar[bool] = False
+
     @classmethod
     def __get_pydantic_core_schema__(cls, value, handler=None):
         return no_info_before_validator_function(cls.__eth_pydantic_validate__, int_schema())
@@ -33,8 +35,10 @@ class BaseHexInt(int, BaseHex):
         return value  # Override.
 
     @classmethod
-    def from_bytes(cls, data, byteorder: str = "big", signed: bool = False) -> "BaseHexInt":
-        int_value = int.from_bytes(data, byteorder="big", signed=signed)
+    def from_bytes(
+        cls, data, byteorder: Literal["little", "big"] = "big", signed: bool = False
+    ) -> "BaseHexInt":
+        int_value = int.from_bytes(data, byteorder=byteorder, signed=signed)
         return cls(int_value)
 
     @classmethod
@@ -48,14 +52,15 @@ class BaseHexInt(int, BaseHex):
         elif isinstance(data, str):
             value = validate_hex_str(data)
             if value == "0x":
-                return 0
+                return cls(0)
 
             return cls(int(value, 16))
 
         raise HexValueError(data)
 
     def __bytes__(self) -> bytes:
-        return self.to_bytes(self.size, byteorder="big")
+        size = self.size or max(1, (self.bit_length() + 7) // 8)
+        return self.to_bytes(size, byteorder="big", signed=self.signed)
 
 
 class HexInt(BaseHexInt):
@@ -96,7 +101,10 @@ class BoundHexInt(BaseHexInt):
 
         # NOTE: Integers should always pad left; else the value increases.
         schema["serialization"] = create_hex_serializer(
-            size=cls.size, pad=PadDirection.LEFT, force_even_length=False
+            size=cls.size,
+            pad=PadDirection.LEFT,
+            force_even_length=False,
+            modulus=2 ** (8 * cls.size) if cls.signed else None,
         )
 
         return schema
@@ -106,6 +114,10 @@ class BoundHexInt(BaseHexInt):
         cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> int:
         hex_int = cls.validate_hex(value)
+        if cls.signed and not isinstance(value, int) and hex_int >= 2 ** (8 * cls.size - 1):
+            # Two's complement, the form a signed value serializes to.
+            hex_int = cls(hex_int - 2 ** (8 * cls.size))
+
         sized_value = cls.validate_size(hex_int)
         return cls(sized_value)
 
