@@ -148,3 +148,5 @@ def test_0x():
 
     model2 = HexInt32Model(value="0x")
     assert model2.value == 0
+
+    assert isinstance(HexInt.validate_hex("0x"), HexInt)
