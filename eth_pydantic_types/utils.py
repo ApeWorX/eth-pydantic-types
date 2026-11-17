@@ -24,8 +24,10 @@ def validate_size(value: "__SIZED_T", size: int, coerce: Callable | None = None)
 
 
 def validate_in_range(value: int, size: int, signed: bool = True) -> int:
+    # `size` is a byte length, matching BoundHexInt and the unsigned branch.
     if signed:
-        if -(2**size) / 2 <= value < (2**size) / 2:
+        bound = 2 ** (size * 8 - 1)
+        if -bound <= value < bound:
             return value
 
     else:

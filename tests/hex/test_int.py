@@ -90,6 +90,22 @@ class TestUInt256:
         assert len(HexBytes(str_value)) == 32
 
 
+def test_signed_bound_matches_schema():
+    class I256(BoundHexInt):
+        size: ClassVar[int] = 32
+        signed: ClassVar[bool] = True
+
+    class Model(BaseModel):
+        value: I256
+
+    # 2**31 fits in int256. The schema bound is 2**255.
+    assert Model(value=2**31).value == 2**31
+    assert Model(value=-(2**31) - 1).value == -(2**31) - 1
+
+    with pytest.raises(ValidationError):
+        _ = Model(value=2 ** (8 * 32 - 1))
+
+
 def test_custom_type():
     # An 8-byte unsigned hex integer.
     class NetworkID(BoundHexInt):

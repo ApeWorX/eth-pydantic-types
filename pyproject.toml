@@ -1,5 +1,6 @@
 [build-system]
 requires = ["setuptools>=75.6.0", "wheel", "setuptools_scm[toml]>=5.0"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 Repository = "https://github.com/ApeWorX/eth-pydantic-types"
@@ -59,13 +60,8 @@ lint = [
     "mdformat-frontmatter>=0.4.1",  # Needed for frontmatters-style headers in issue templates
     "mdformat-pyproject>=0.0.2",  # Allows configuring in pyproject.toml
 ]
-doc = [
-    "sphinx-ape",
-]
-release = [  # `release` GitHub Action job uses this
-    "wheel",  # Packaging tool
-    "twine==3.8.0",  # Package upload tool
-    "packaging>=23.1,<24",  # Needed for twine
+docs = [
+    "sphinx-ape>=0.1.2,<2",
 ]
 dev = [
     "commitlint",  # Check for conventionalcommits
@@ -74,7 +70,7 @@ dev = [
     "ipdb",  # Debugger (Must use `export PYTHONBREAKPOINT=ipdb.set_trace`)
     {include-group = "test"},
     {include-group = "lint"},
-    {include-group = "doc"},
+    {include-group = "docs"},
 ]
 
 [tool.setuptools]

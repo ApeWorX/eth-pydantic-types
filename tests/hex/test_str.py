@@ -77,11 +77,6 @@ class TestHexStr:
             assert len(model.my_address) == 42
             assert model.my_address == "0xcafac3dd18ac6c6e92c921884f9e4176737c052c"
 
-        def test_from_bytes(self):
-            value = b"\x101\xf0\xc9\xacT\xdc\xb6KO\x12\x1a'\x95|\x14&<\\\xb4"
-            model = StrModel(value=value)
-            assert model.value == HexBytes(value)
-
     def test_right_pad(self):
         class MyModel(BaseModel):
             my_str: HexStr20

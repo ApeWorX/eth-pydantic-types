@@ -9,6 +9,9 @@ from eth_pydantic_types.hex import HexBytes
 ADDRESS = "837207e343277cbd6c114a45ec0e9ec56a1ad84"
 CHECKSUM_ADDRESS = "0x0837207e343277CBd6c114a45EC0e9Ec56a1AD84"
 
+LEADING_ZEROES_ADDRESS = "04444c5dc75cb358380d2e3de08a90"  # Uniswap v4 pool manager
+CHECKSUM_LEADING_ZEROES_ADDRESS = "0x000000000004444c5dc75cB358380D2e3dE08A90"
+
 
 class Model(BaseModel):
     address: Address
@@ -62,4 +65,14 @@ def test_model_dump():
     model = Model(address=ADDRESS, address_type=ADDRESS)
     actual = model.model_dump()
     expected = {"address": CHECKSUM_ADDRESS, "address_type": CHECKSUM_ADDRESS}
+    assert actual == expected
+
+
+def test_leading_zeroes():
+    model = Model(address=LEADING_ZEROES_ADDRESS, address_type=LEADING_ZEROES_ADDRESS)
+    actual = model.model_dump()
+    expected = {
+        "address": CHECKSUM_LEADING_ZEROES_ADDRESS,
+        "address_type": CHECKSUM_LEADING_ZEROES_ADDRESS,
+    }
     assert actual == expected
