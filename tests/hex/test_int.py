@@ -25,7 +25,7 @@ class UInt256Model(BaseModel):
 
 
 class TestHexInt:
-    @pytest.mark.parametrize("value", ("0xa", 10, b"\n"))
+    @pytest.mark.parametrize("value", ("0xa", "0XA", 10, b"\n"))
     def test_valid(self, value):
         actual = IntModel(value=value)
         assert actual.value == 10
@@ -106,6 +106,25 @@ def test_signed_bound_matches_schema():
         _ = Model(value=2 ** (8 * 32 - 1))
 
 
+@pytest.mark.parametrize("value", (-128, -5, -1, 0, 127))
+def test_signed_model_dump_round_trip(value):
+    class Int8(BoundHexInt):
+        size: ClassVar[int] = 1
+        signed: ClassVar[bool] = True
+
+    class Model(BaseModel):
+        value: Int8
+
+    dumped = Model(value=value).model_dump_json()
+    assert Model.model_validate_json(dumped).value == value
+    assert bytes(Int8(value)) == value.to_bytes(1, "big", signed=True)
+
+
+def test_from_bytes_byteorder():
+    assert HexInt.from_bytes(b"\x01\x00", byteorder="little") == 1
+    assert bytes(HexInt(256)) == b"\x01\x00"
+
+
 def test_custom_type():
     # An 8-byte unsigned hex integer.
     class NetworkID(BoundHexInt):
@@ -129,3 +148,5 @@ def test_0x():
 
     model2 = HexInt32Model(value="0x")
     assert model2.value == 0
+
+    assert isinstance(HexInt.validate_hex("0x"), HexInt)

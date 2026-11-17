@@ -81,10 +81,14 @@ class BoundHexBytes(HexBytes):
     def validate_size(
         cls: type[HexBytesSelf], value: bytes, pad_direction: PadDirection = PadDirection.LEFT
     ) -> bytes:
+        cls.update_schema()
+        return validate_bytes_size(value, cls.size, pad_direction=pad_direction)
+
+    @classmethod
+    def update_schema(cls):
         str_size = cls.size * 2
         cls.schema_pattern = get_hash_pattern(str_size)
         cls.schema_examples = get_hash_examples(str_size)
-        return validate_bytes_size(value, cls.size, pad_direction=pad_direction)
 
 
 class HexBytes20(BoundHexBytes):

@@ -31,6 +31,11 @@ class TestHexStr:
         model = StrModel(value="0x123")
         assert int(model.value, 16) == 291
         assert bytes.fromhex(model.value[2:]) == b"\x01#"
+        assert int(HexStr.__eth_pydantic_validate__("0x")) == 0
+
+    def test_bytes_unprefixed(self):
+        value = HexStr32.__eth_pydantic_validate__("0x01", prefixed=False)
+        assert bytes(value) == b"\x01" + bytes(31)
 
     def test_schema(self):
         actual = StrModel.model_json_schema()

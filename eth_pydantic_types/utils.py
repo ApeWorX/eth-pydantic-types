@@ -103,7 +103,7 @@ def _coerce_hexbytes_size(
 
 
 def validate_hex_str(value: str) -> str:
-    hex_value = (value[2:] if value.startswith("0x") else value).lower()
+    hex_value = (value[2:] if value[:2] in ("0x", "0X") else value).lower()
     if set(hex_value) - set("1234567890abcdef"):
         raise HexValueError(value)
 

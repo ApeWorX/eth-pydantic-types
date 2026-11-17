@@ -47,7 +47,7 @@ class Bip122Uri(str):
     def __eth_pydantic_validate__(
         cls, value: Any, info: ValidationInfo | None = None, **kwargs
     ) -> str:
-        if not value.startswith(cls.prefix):
+        if not isinstance(value, str) or not value.startswith(cls.prefix):
             raise Bip122UriFormatError(value)
 
         genesis_hash, block_keyword, block_hash = cls.parse(value)
