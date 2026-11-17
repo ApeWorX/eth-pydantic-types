@@ -5,6 +5,7 @@ from eth_pydantic_types.hex import (
     HexBytes,
     HexStr,
     HexStr20,
+    HexStr32,
 )
 from eth_pydantic_types.utils import PadDirection
 
@@ -90,3 +91,15 @@ class TestHexStr:
 
         model = MyModel(my_str=1)
         assert model.my_str.startswith("0x01")
+
+    @pytest.mark.parametrize(
+        "value",
+        (
+            pytest.param("0x00ab5801a7d398351b8be11c439e05c5b3259aec", id="leading-00"),
+            pytest.param("0x00000000219ab540356cbb839cbe05303d7705fa", id="leading-00000000"),
+            pytest.param("0x02ab5801a7d398351b8be11c439e05c5b3259aec", id="leading-02"),
+        ),
+    )
+    def test_right_pad_keeps_leading_zero_bytes(self, value):
+        actual = HexStr32.__eth_pydantic_validate__(value)
+        assert actual == f"{value}{'00' * 12}"
