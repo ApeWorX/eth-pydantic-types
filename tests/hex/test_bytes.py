@@ -104,3 +104,15 @@ class TestBoundHexBytes:
 
         model = MyModel(my_bytes=1)
         assert model.my_bytes.startswith(HexBytes(1))
+
+    @pytest.mark.parametrize(
+        "value",
+        (
+            pytest.param("0x00ab5801a7d398351b8be11c439e05c5b3259aec", id="leading-00"),
+            pytest.param("0x00000000219ab540356cbb839cbe05303d7705fa", id="leading-00000000"),
+            pytest.param("0x02ab5801a7d398351b8be11c439e05c5b3259aec", id="leading-02"),
+        ),
+    )
+    def test_right_pad_keeps_leading_zero_bytes(self, value):
+        actual = HexBytes32.__eth_pydantic_validate__(bytes.fromhex(value[2:]))
+        assert actual == bytes.fromhex(value[2:]) + b"\x00" * 12
